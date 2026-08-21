@@ -1,0 +1,1147 @@
+/* ==========================================================
+   Елизавета Кистень — стили главной
+   Всё заперто внутри .lk — можно безопасно добавлять чужие блоки рядом
+   ========================================================== */
+
+.lk {
+  /* ---- токены ---- */
+  --ink:      #0A0A0A;
+  --paper:    #FAF9F4;  /* газетная бумага, почти белая */
+  --card:     transparent;  /* карточки без заливки — бумага и текстура проходят насквозь */
+  --lemon:    #E8FF52;
+  --muted:    #85817A;
+  --rule:     #E1DED4;
+  --wash:     #F1EFE7;
+
+  --pad:      56px;
+  --gap:      44px;   /* половина, вторая половина — паддинг у .lk-main */
+  --side-w:   300px;
+  --sec-gap:  64px;
+
+  /* ---- каркас ---- */
+  display: grid;
+  grid-template-columns: var(--side-w) minmax(0, 1fr);
+  gap: var(--gap);
+  align-items: start;
+
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 48px var(--pad);
+  box-sizing: border-box;
+
+  background: var(--paper);
+  color: var(--ink);
+  font-family: 'Courier New', Courier, 'Nimbus Mono PS', 'Liberation Mono', monospace;
+  font-size: 14px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+.lk *,
+.lk *::before,
+.lk *::after { box-sizing: border-box; }
+
+.lk p,
+.lk h1, .lk h2, .lk h3,
+.lk ul, .lk figure, .lk blockquote { margin: 0; padding: 0; }
+
+.lk ul { list-style: none; }
+
+.lk a {
+  color: inherit;
+  text-decoration: none;
+  transition: background-color .12s ease, color .12s ease;
+}
+
+.lk a:focus-visible,
+.lk button:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 3px;
+}
+
+/* ==========================================================
+   ЛЕВАЯ КОЛОНКА
+   ========================================================== */
+
+.lk-side {
+  position: sticky;
+  top: 40px;
+  align-self: start;
+
+  display: flex;
+  flex-direction: column;
+  gap: clamp(18px, 3vh, 40px);
+
+  /* колонка ровно по высоте окна: контакты внизу всегда на виду,
+     скроллить за ними не нужно */
+  height: calc(100vh - 80px);
+}
+
+/* текст и ссылки не сжимаются — ужимается только фото */
+.lk-ident,
+.lk-nav,
+.lk-contacts { flex: none; }
+
+.lk-ident { display: flex; flex-direction: column; gap: 12px; }
+
+.lk-name a { display: inline; }
+
+.lk-name {
+  font-size: 26px;
+  font-weight: 700;
+  line-height: 1.25;
+  letter-spacing: .5px;
+}
+
+/* лимонная подсветка имени — не блок, а маркер по тексту */
+.lk-mark {
+  background: var(--lemon);
+  padding: 3px 8px 3px 4px;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+  transition: background-color .12s ease, color .12s ease;
+}
+
+/* на ховер инвертируется — как кнопки, единая логика на всей странице */
+.lk-name a:hover .lk-mark {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+.lk-role { font-size: 13.5px; line-height: 1.55; }
+
+.lk-nav { display: flex; flex-direction: column; gap: 9px; }
+
+.lk-nav a {
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.3;
+  width: fit-content;
+  box-shadow: inset 0 -1px 0 transparent;
+}
+.lk-nav a:hover { box-shadow: inset 0 -1px 0 var(--ink); }
+
+/* текущий раздел: лимонный маркер, тот же приём, что у имени */
+.lk-nav a[aria-current="page"] {
+  background: var(--lemon);
+  padding: 1px 6px 1px 4px;
+  margin-left: -4px;
+}
+
+/* фото показывается целиком, в родных пропорциях — не кадрируется.
+   Забирает ровно ту высоту, что осталась, и уменьшается вместе с окном. */
+.lk-portrait {
+  flex: 1 1 auto;
+  min-height: 0;
+  max-width: 260px;
+  background: none;
+
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+.lk-portrait img {
+  display: block;
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+
+  /* фото «печатается» на бумагу: светлые зоны снимка забирают
+     тон и текстуру фона, вместо серого прямоугольника поверх */
+  mix-blend-mode: multiply;
+  filter: grayscale(1) contrast(1.06);
+}
+
+.lk-contacts { display: flex; flex-direction: column; }
+
+.lk-contact {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 9px 0;
+  font-size: 12px;
+  border-bottom: 1px dashed var(--rule);
+}
+.lk-contact span:last-child { color: var(--muted); }
+.lk-contact:hover { background: var(--lemon); padding-left: 8px; padding-right: 8px; }
+.lk-contact:hover span:last-child { color: var(--ink); }
+
+/* ==========================================================
+   ПРАВАЯ КОЛОНКА
+   ========================================================== */
+
+.lk-main {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sec-gap);
+  min-width: 0;
+
+  /* вертикальная пунктирная линия между колонками.
+     Живёт на .lk-main, потому что это самый высокий элемент —
+     линия тянется на всю страницу, а не только на высоту сайдбара. */
+  padding-left: 44px;
+  border-left: 1px dashed var(--rule);
+}
+
+/* ---- 01 лид ---- */
+.lk-lead { display: flex; flex-direction: column; gap: 22px; align-items: flex-start; }
+
+.lk-lead-text {
+  font-size: 24px;
+  line-height: 1.45;
+  /* мера как у .lk-note: лид длинный, на 24em он вытягивался
+     в узкий высокий столбик на пол-экрана */
+  max-width: 46em;
+}
+
+.lk-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  padding: 6px 12px 6px 8px;
+  background: transparent;
+  border: 1px dashed var(--rule);
+  font-size: 12px;
+}
+.lk-dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: var(--lemon);
+  border: 1px solid var(--ink);
+  flex: none;
+}
+
+/* ---- кнопки ---- */
+.lk-btns { display: flex; flex-wrap: wrap; gap: 12px; }
+
+.lk-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 28px;
+  padding: 18px 20px 18px 22px;
+  border: 1px solid var(--ink);
+  background: var(--card);
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+.lk-btn--lemon { background: var(--lemon); }
+
+.lk-btn:hover { background: var(--ink); color: var(--paper); }
+
+.lk-cta { display: flex; flex-direction: column; gap: 14px; }
+.lk-note {
+  font-size: 14px;
+  line-height: 1.7;
+  max-width: 46em;
+}
+
+/* ---- заголовок секции ---- */
+.lk-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  padding: 12px 0 14px;
+  border-top: 1px dashed var(--ink);
+}
+.lk-head h2 {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.6px;
+  text-transform: uppercase;
+}
+.lk-count {
+  flex: none;
+  /* счётчик не переносится по словам — иначе на узком экране длинный
+     заголовок ломает его на «4 / КЕЙСА». Переносится сам заголовок. */
+  white-space: nowrap;
+  font-size: 11px;
+  letter-spacing: 1.6px;
+  color: var(--muted);
+  text-transform: uppercase;
+}
+
+/* ---- 03 темы запросов ---- */
+.lk-topics {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0;
+  padding-top: 22px;
+}
+.lk-topic { padding: 0 22px; }
+.lk-topic:first-child { padding-left: 0; }
+.lk-topic:last-child  { padding-right: 0; }
+.lk-topic + .lk-topic { border-left: 1px dashed var(--rule); }
+
+.lk-topic-head {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  padding-bottom: 14px;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.35;
+  letter-spacing: .6px;
+  text-transform: uppercase;
+}
+.lk-topic-no {
+  flex: none;
+  padding: 2px 5px;
+  background: var(--lemon);
+  font-size: 10px;
+  letter-spacing: 1px;
+}
+
+.lk-topic-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 11px 0;
+  border-top: 1px dashed var(--rule);
+  font-size: 12.5px;
+  line-height: 1.55;
+}
+.lk-topic-list i {
+  flex: none;
+  font-style: normal;
+  font-size: 10.5px;
+  letter-spacing: .5px;
+  color: var(--muted);
+  padding-top: 2px;
+}
+
+/* ---- 04 услуги ---- */
+
+/* входной баннер: единственная строка во всю ширину */
+.lk-svc-entry {
+  display: flex;
+  align-items: baseline;
+  gap: 20px;
+  margin-top: 24px;
+  padding: 16px 18px;
+  background: var(--lemon);
+  border: 1px solid var(--ink);
+}
+.lk-svc-entry-title { font-size: 16px; font-weight: 700; }
+.lk-svc-entry-meta  { font-size: 12px; margin-left: auto; }
+.lk-svc-entry-go    { font-size: 14px; font-weight: 700; }
+.lk-svc-entry:hover { background: var(--ink); color: var(--paper); }
+
+/* сетка карточек-объявлений */
+.lk-svc-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  margin-top: 24px;
+}
+
+/* карточка: пунктирный контур — «вырезать по линии», как в газетной рубрике */
+.lk-svc {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 18px 18px 16px;
+  border: 1px dashed var(--ink);
+  background: var(--card);
+}
+.lk-svc:hover { background: var(--lemon); }
+
+.lk-svc-no {
+  font-style: normal;
+  font-size: 11px;
+  letter-spacing: 1px;
+  color: var(--muted);
+}
+.lk-svc:hover .lk-svc-no { color: var(--ink); }
+
+.lk-svc-title { font-size: 17px; font-weight: 700; line-height: 1.3; }
+
+.lk-svc-desc {
+  font-size: 12.5px;
+  line-height: 1.6;
+  color: var(--muted);
+  flex: 1 1 auto;
+}
+.lk-svc:hover .lk-svc-desc { color: var(--ink); }
+
+/* печатная табличка характеристик */
+.lk-svc-spec { display: flex; flex-direction: column; }
+.lk-svc-spec > div {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+  padding: 7px 0;
+  border-top: 1px dashed var(--rule);
+}
+.lk-svc:hover .lk-svc-spec > div { border-top-color: var(--ink); }
+
+.lk-svc-spec dt {
+  font-size: 10.5px;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.lk-svc:hover .lk-svc-spec dt { color: var(--ink); }
+.lk-svc-spec dd {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 700;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.lk-svc-go {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  padding-top: 12px;
+  border-top: 1px solid var(--ink);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.lk-section-cta { padding-top: 20px; }
+
+/* ---- сетки карточек ---- */
+.lk-grid { display: grid; gap: 20px; padding-top: 24px; }
+.lk-grid--3 { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+
+.lk-card {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 18px 20px 20px;
+  border: 1px solid var(--ink);
+  background: var(--card);
+}
+.lk-card--lemon { background: var(--lemon); }
+
+.lk-kind {
+  font-style: normal;
+  font-size: 11px;
+  letter-spacing: 1px;
+  color: var(--muted);
+}
+.lk-kind { font-size: 10px; font-weight: 700; letter-spacing: 1.4px; }
+.lk-card--lemon .lk-kind { color: var(--ink); }
+
+.lk-card h3 { font-size: 18px; font-weight: 700; line-height: 1.3; }
+.lk-card p  { font-size: 12.5px; line-height: 1.6; }
+
+/* карточки материалов: прижать ссылку к низу */
+.lk-grid--3 .lk-card { justify-content: space-between; }
+.lk-grid--3 .lk-card > div { display: flex; flex-direction: column; gap: 10px; }
+.lk-grid--3 .lk-card h3 { font-size: 17px; }
+.lk-grid--3 .lk-card p { font-size: 12px; color: var(--muted); }
+.lk-card--lemon p { color: var(--ink); }
+
+.lk-get {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  padding-top: 12px;
+  border-top: 1px dashed var(--rule);
+  font-size: 12px;
+  font-weight: 700;
+}
+.lk-card--lemon .lk-get { border-top-color: var(--ink); }
+.lk-get:hover { background: var(--ink); color: var(--paper); padding-left: 8px; padding-right: 8px; }
+
+/* ---- 07 футер ---- */
+.lk-foot {
+  display: flex;
+  flex-direction: column;
+  gap: 26px;
+  padding-top: 34px;
+  border-top: 2px dashed var(--ink);
+}
+.lk-foot-text { font-size: 24px; line-height: 1.45; }
+.lk-foot-meta {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  padding-top: 20px;
+  font-size: 11px;
+  color: var(--muted);
+}
+
+/* ==========================================================
+   АДАПТИВ
+   ========================================================== */
+
+@media (max-width: 1100px) {
+  .lk { --gap: 48px; --side-w: 250px; --pad: 32px; --sec-gap: 52px; }
+  .lk-lead-text { font-size: 22px; }
+  .lk-grid--3 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 760px) {
+  .lk {
+    grid-template-columns: minmax(0, 1fr);
+    --gap: 44px;
+    --pad: 20px;
+    --sec-gap: 44px;
+    padding-top: 28px;
+    padding-bottom: 40px;
+  }
+
+  .lk-side {
+    position: static;
+    gap: 28px;
+    height: auto;
+  }
+  .lk-portrait { flex: none; max-width: 220px; }
+
+  .lk-lead-text { font-size: 20px; max-width: none; }
+  .lk-foot-text { font-size: 18px; }
+
+  .lk-btn { width: 100%; font-size: 13px; padding: 16px 18px; }
+
+  .lk-grid--3 { grid-template-columns: minmax(0, 1fr); }
+
+  .lk-index { grid-template-columns: minmax(0, 1fr); }
+  .lk-index em { display: none; }
+  .lk-chips { gap: 6px; }
+  .lk-chip { font-size: 11px; padding: 7px 10px; }
+
+  .lk-svc-grid { grid-template-columns: minmax(0, 1fr); }
+
+  .lk-svc-entry {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+  }
+  .lk-svc-entry-meta { margin-left: 0; }
+  .lk-svc-entry-go { display: none; }
+
+  .lk-foot-meta { flex-direction: column; gap: 6px; }
+}
+
+/* низкое окно (ландшафт телефона, невысокий ноутбук): в липкую колонку
+   высотой во весь экран портрет уже не влезает — он схлопывается в ноль,
+   а контакты вылезают за её пределы и обрезаются. Здесь колонка перестаёт
+   быть липкой и просто едет со страницей. */
+@media (min-width: 761px) and (max-height: 700px) {
+  .lk-side {
+    position: static;
+    height: auto;
+    gap: 22px;
+  }
+  .lk-portrait { flex: none; max-width: 200px; }
+}
+
+/* тач-устройства: ховеры не липнут */
+@media (hover: none) {
+  .lk-index a:hover,
+  .lk-services a:hover,
+  .lk-contact:hover,
+  .lk-get:hover { background: none; padding-left: 0; padding-right: 0; color: inherit; }
+  .lk-btn:hover { background: transparent; color: var(--ink); }
+  .lk-btn--lemon:hover { background: var(--lemon); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lk * { transition: none !important; }
+}
+
+
+/* ==========================================================
+   ТЕКСТУРА БУМАГИ
+   Три слоя: тон + типографский растр + зерно волокна.
+   Всё на CSS, ничего грузить в Cargo не нужно.
+   ========================================================== */
+
+/* фон за пределами колонки (широкие экраны) */
+html { scroll-behavior: smooth; }
+html, body { background: #FAF9F4; }
+
+.lk {
+  background-color: var(--paper);
+
+  /* растр офсетной печати: две сетки точек со смещением — розетка */
+  background-image:
+    radial-gradient(circle, rgba(40, 32, 10, .035) .5px, transparent .6px),
+    radial-gradient(circle, rgba(40, 32, 10, .025) .5px, transparent .6px);
+  background-size: 5px 5px, 5px 5px;
+  background-position: 0 0, 2.5px 2.5px;
+
+  position: relative;
+  isolation: isolate;
+}
+
+/* зерно волокна поверх всего — не тайлится и не «плывёт» при скролле */
+.lk::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: .38;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='220' height='220' filter='url(%23n)' opacity='.32'/%3E%3C/svg%3E");
+}
+
+/* контент — над текстурой.
+   ВАЖНО: .lk-side НЕ трогаем position — там sticky, relative его убьёт.
+   z-index работает и так, sticky уже позиционирован. */
+.lk-main { position: relative; z-index: 1; }
+.lk-side { z-index: 1; }
+
+/* портрет-заглушка на кремовом читается лучше чуть темнее */
+
+
+@media (prefers-reduced-motion: reduce) {
+  .lk::before { opacity: .3; }
+}
+
+
+/* пятна неравномерного старения — крупная турбулентность поверх тона.
+   Даёт «эту бумагу уже полежала», но без ухода в жёлтый. */
+.lk::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: .22;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='900' height='900'%3E%3Cfilter id='m'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.011' numOctaves='3' seed='7'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 .62  0 0 0 0 .58  0 0 0 0 .44  0 0 0 -.55 .62'/%3E%3C/filter%3E%3Crect width='900' height='900' filter='url(%23m)'/%3E%3C/svg%3E");
+  background-size: 900px 900px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lk::after { opacity: .16; }
+}
+
+
+/* ==========================================================
+   МЯТАЯ БУМАГА
+   feDiffuseLighting поверх турбулентности даёт рельеф со светом
+   и тенью — это читается как заломы, а не как пятна.
+   Режим soft-light: слой не темнит страницу, только гнёт свет.
+   ========================================================== */
+
+.lk-paper {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: .16;
+  mix-blend-mode: soft-light;
+  background-size: 780px 780px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='780' height='780'%3E%3Cfilter id='c'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.016' numOctaves='4' seed='11' stitchTiles='stitch' result='t'/%3E%3CfeDiffuseLighting in='t' lighting-color='%23ffffff' surfaceScale='2.6'%3E%3CfeDistantLight azimuth='48' elevation='62'/%3E%3C/feDiffuseLighting%3E%3C/filter%3E%3Crect width='780' height='780' filter='url(%23c)'/%3E%3C/svg%3E");
+}
+
+/* на мобильном линия между колонками не нужна — они сложены друг под друга */
+@media (max-width: 760px) {
+  .lk-main {
+    padding-left: 0;
+    border-left: none;
+  }
+}
+
+
+/* ==========================================================
+   СТРАНИЦА «ОБО МНЕ»
+   ========================================================== */
+
+/* вводный текст с газетной буквицей */
+.lk-bio {
+  padding-top: 22px;
+  font-size: 14px;
+  line-height: 1.75;
+  max-width: 62em;
+}
+/* абзацы идут сплошным потоком с красной строкой — газетный набор,
+   а не блоки с отбивкой */
+.lk-bio p + p { text-indent: 1.8em; }
+
+.lk-bio::first-letter {
+  float: left;
+  font-size: 52px;
+  line-height: .82;
+  font-weight: 700;
+  margin: 4px 10px 0 0;
+  padding: 6px 8px;
+  background: var(--lemon);
+}
+
+/* три газетные колонки */
+.lk-cols {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0;
+}
+
+/* вертикальные пунктиры между колонками — как между сайдбаром и контентом */
+.lk-col { padding: 0 22px; }
+.lk-col:first-child { padding-left: 0; }
+.lk-col:last-child  { padding-right: 0; }
+.lk-col + .lk-col { border-left: 1px dashed var(--rule); }
+
+.lk-cv + .lk-cv { margin-top: 34px; }
+
+.lk-cv-head {
+  padding: 10px 0 12px;
+  border-top: 1px solid var(--ink);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.6px;
+  text-transform: uppercase;
+}
+
+/* строка резюме: год слева, текст справа */
+.lk-cv-item {
+  display: grid;
+  grid-template-columns: 46px minmax(0, 1fr);
+  gap: 12px;
+  padding: 11px 0;
+  border-top: 1px dashed var(--rule);
+}
+.lk-cv-item p { font-size: 12.5px; line-height: 1.6; }
+
+.lk-year {
+  font-size: 11px;
+  letter-spacing: .5px;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+/* места работы: период, должность, описание — в столбик */
+.lk-job {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 14px 0;
+  border-top: 1px dashed var(--rule);
+}
+.lk-job h4 { margin: 0; font-size: 13.5px; font-weight: 700; line-height: 1.4; }
+.lk-job p  { font-size: 12.5px; line-height: 1.65; color: var(--muted); }
+
+@media (max-width: 1100px) {
+  .lk-cols { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .lk-col:nth-child(3) {
+    padding-left: 0;
+    border-left: none;
+    border-top: 1px dashed var(--rule);
+    padding-top: 28px;
+    margin-top: 28px;
+  }
+}
+
+@media (max-width: 760px) {
+  .lk-cols { grid-template-columns: minmax(0, 1fr); }
+  .lk-col {
+    padding: 0;
+    border-left: none;
+  }
+  .lk-col + .lk-col {
+    border-top: 1px dashed var(--rule);
+    padding-top: 28px;
+    margin-top: 28px;
+  }
+  .lk-col:nth-child(3) { margin-top: 28px; padding-top: 28px; }
+
+  .lk-bio { font-size: 13.5px; }
+  .lk-bio::first-letter { font-size: 42px; }
+  .lk-cv-item { grid-template-columns: 44px minmax(0, 1fr); }
+}
+
+
+/* примечание к формату — курсив на лимонной подложке */
+.lk-svc-note {
+  padding: 8px 10px;
+  background: var(--lemon);
+  font-size: 11.5px;
+  font-style: italic;
+  line-height: 1.55;
+}
+.lk-svc:hover .lk-svc-note { background: transparent; border: 1px dashed var(--ink); }
+
+/* метка «бесплатно / платно» у материалов */
+.lk-tag {
+  margin-left: 8px;
+  padding: 2px 6px;
+  background: transparent;
+  border: 1px dashed var(--ink);
+  font-size: 9.5px;
+  letter-spacing: 1px;
+}
+.lk-card--lemon .lk-tag { background: var(--lemon); border-style: solid; }
+
+/* «наверх» в футере */
+.lk-top {
+  font-weight: 700;
+  color: var(--ink);
+  box-shadow: inset 0 -1px 0 var(--ink);
+}
+.lk-top:hover { background: var(--lemon); }
+
+@media (max-width: 1100px) {
+  .lk-topics { grid-template-columns: minmax(0, 1fr); }
+  .lk-topic { padding: 0; }
+  .lk-topic + .lk-topic {
+    border-left: none;
+    border-top: 1px dashed var(--rule);
+    margin-top: 26px;
+    padding-top: 26px;
+  }
+}
+
+@media (max-width: 760px) {
+  .lk-svc-grid { grid-template-columns: minmax(0, 1fr); }
+  .lk-lead-text { font-size: 19px; }
+
+  .lk-note { font-size: 13px; }
+
+  /* Сайдбар раскрывается в родительскую сетку (display: contents),
+     и дальше его части раскладываются через order. До этого на телефоне
+     перед первой строчкой контента приходилось пролистать имя,
+     навигацию, портрет во всю ширину и три контактные ссылки — около
+     780px прокрутки, лид не попадал на первый экран вообще.
+     Теперь порядок: имя → навигация → контент → портрет → контакты. */
+  .lk-side { display: contents; }
+
+  .lk-ident    { order: 1; }
+  .lk-nav      { order: 2; }
+  .lk-main     { order: 3; }
+  .lk-portrait { order: 4; }
+  .lk-contacts { order: 5; }
+
+  /* z-index жил на .lk-side как на элементе сетки. Элемента больше нет —
+     значит, поднимать над текстурой бумаги нужно каждую часть отдельно,
+     иначе фиксированные слои фона накроют их сверху. */
+  .lk-ident,
+  .lk-nav,
+  .lk-portrait,
+  .lk-contacts { z-index: 1; }
+
+  /* расстояния теперь задаёт шаг родительской сетки — делаем его мелким,
+     а воздух добавляем там, где он нужен */
+  .lk { --gap: 22px; }
+  .lk-main     { margin-top: 10px; }
+  .lk-portrait { margin-top: 18px; }
+
+  /* тач-цели: строчка навигации была 18px в высоту — пальцем не попасть.
+     Ровно 44px = 18px текста + 13px паддинга сверху и снизу. */
+  .lk-nav { gap: 2px; }
+  .lk-nav a { padding: 13px 0; }
+  .lk-nav a[aria-current="page"] { padding: 13px 6px 13px 4px; }
+
+  /* контактные строки были 38px — добираем до тех же 44px */
+  .lk-contact { padding: 12px 0; }
+
+  /* «забрать» в карточках материалов: 32px → 44px */
+  .lk-get { padding-bottom: 12px; }
+
+  /* «наверх»: паддинг растянул бы подчёркивание вниз и оторвал его
+     от текста, поэтому линию рисуем отдельно и держим у базовой линии */
+  .lk-top {
+    /* в колонке футера элемент растягивался на всю ширину, и подчёркивание
+       уезжало через весь экран — прижимаем коробку к тексту */
+    align-self: flex-start;
+    display: inline-block;
+    position: relative;
+    padding: 13px 0;
+    box-shadow: none;
+  }
+  .lk-top::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 13px;
+    border-bottom: 1px solid var(--ink);
+  }
+}
+
+
+/* ==========================================================
+   СТАТИЧЕСКИЙ САЙТ: то, что нельзя было сделать в Cargo
+   ========================================================== */
+
+/* ссылка для клавиатуры — первое, на что попадает Tab */
+.lk-skip {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 99;
+  padding: 12px 18px;
+  background: var(--lemon);
+  border: 1px solid var(--ink);
+  color: var(--ink);
+  font: 700 13px/1.2 'Courier New', Courier, monospace;
+  text-decoration: none;
+}
+.lk-skip:focus { left: 12px; top: 12px; }
+
+/* Плавный переход между страницами: сайдбар не мигает при навигации —
+   визуально он остаётся на месте, как и хотелось.
+   Браузеры без поддержки просто перезагружают страницу как обычно. */
+@view-transition { navigation: auto; }
+
+.lk-side { view-transition-name: sidebar; }
+.lk-main { view-transition-name: content; }
+
+::view-transition-old(content) { animation-duration: .18s; }
+::view-transition-new(content) { animation-duration: .18s; }
+
+/* сайдбар не анимируем вовсе — он должен выглядеть неподвижным */
+::view-transition-group(sidebar),
+::view-transition-old(sidebar),
+::view-transition-new(sidebar) { animation: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(*),
+  ::view-transition-new(*) { animation: none !important; }
+}
+
+/* печать: убрать текстуру и интерфейсные элементы */
+@media print {
+  .lk-paper, .lk-skip, .lk-top { display: none; }
+  .lk { display: block; padding: 0; }
+  .lk-main { border-left: none; padding-left: 0; }
+  .lk-portrait { max-width: 180px; }
+  a { text-decoration: none; color: #000; }
+}
+
+
+/* ==========================================================
+   СТРАНИЦА «КЕЙСЫ»
+   Один кейс — одна карточка. Рамка сплошная (правило: сплошные
+   только у кнопок и карточек), всё внутри разделено пунктиром.
+   Лимон — только на номере кейса, как на номерах разделов.
+   ========================================================== */
+
+.lk-cases {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  padding-top: 24px;
+  align-items: start;
+}
+
+.lk-case {
+  display: flex;
+  flex-direction: column;
+  padding: 20px 20px 22px;
+  border: 1px solid var(--ink);
+  background: var(--card);
+}
+
+.lk-case-head {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  padding-bottom: 16px;
+}
+.lk-case-no {
+  flex: none;
+  padding: 2px 5px;
+  background: var(--lemon);
+  font-style: normal;
+  font-size: 10px;
+  letter-spacing: 1px;
+}
+.lk-case-name { font-size: 18px; font-weight: 700; line-height: 1.3; }
+
+/* блок кейса: запрос / что сделали / успехи / не получилось */
+.lk-case-block {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 14px 0 0;
+  border-top: 1px dashed var(--rule);
+}
+.lk-case-block + .lk-case-block { margin-top: 16px; }
+
+.lk-case-label {
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+/* запрос художника — цитата, помечена пунктирной линейкой слева */
+.lk-case-quote {
+  padding-left: 14px;
+  border-left: 1px dashed var(--rule);
+  font-size: 13px;
+  line-height: 1.65;
+}
+.lk-case-quote + .lk-case-quote { margin-top: -2px; }
+.lk-case-quote b { font-weight: 700; }
+
+/* маркер держим висячим отступом, а не флексом: у флекс-элемента
+   min-width: auto, и на узком экране строка перестаёт сжиматься —
+   страница уезжает в горизонтальный скролл */
+.lk-case-list li {
+  padding: 9px 0 9px 18px;
+  text-indent: -18px;
+  border-top: 1px dashed var(--rule);
+  font-size: 12.5px;
+  line-height: 1.55;
+}
+.lk-case-list li:first-child { padding-top: 0; border-top: none; }
+.lk-case-list li::before {
+  content: "—";
+  margin-right: 8px;
+  color: var(--muted);
+}
+
+/* ключевой результат — та же подчёркивающая линия, что у ссылок в футере */
+.lk-win {
+  font-weight: 700;
+  box-shadow: inset 0 -1px 0 var(--ink);
+}
+
+/* «не получилось» приглушено: это честная сноска, а не заголовок */
+.lk-case-block--flop .lk-case-list li { color: var(--muted); }
+
+.lk-case-list a { box-shadow: inset 0 -1px 0 var(--muted); }
+.lk-case-list a:hover {
+  background: var(--lemon);
+  box-shadow: inset 0 -1px 0 var(--ink);
+}
+
+/* карточки длинные и текстовые — в две колонки им тесно раньше,
+   чем карточкам услуг, поэтому разворачиваем в одну уже на 1100 */
+@media (max-width: 1100px) {
+  .lk-cases { grid-template-columns: minmax(0, 1fr); }
+}
+
+@media (max-width: 760px) {
+  .lk-case { padding: 18px 16px 20px; }
+  .lk-case-name { font-size: 17px; }
+  .lk-case-quote { font-size: 12.5px; padding-left: 12px; }
+}
+
+
+/* ==========================================================
+   ОТЗЫВЫ — карусель
+   Прокрутка нативная (scroll-snap), без единой строчки JS: пальцем
+   на телефоне, трекпадом, shift+колесом и полосой на десктопе,
+   стрелками с клавиатуры. Треку дан tabindex, иначе до него не
+   добраться табом.
+
+   Кнопок «вперёд/назад» нет намеренно: без JS их роль могут играть
+   только ссылки-якоря, а они дерутся со scroll-snap — браузер уводит
+   трек не к той карточке и вдобавок прокручивает всю страницу
+   вертикально. Полоса прокрутки и выглядывающая следующая карточка
+   показывают, что секцию можно листать.
+   ========================================================== */
+
+.lk-quotes {
+  display: flex;
+  align-items: stretch;   /* рамки одной высоты — иначе трек тянется
+                             под самый длинный отзыв, а под короткими
+                             остаётся полтысячи пикселей пустоты */
+  gap: 16px;
+  padding: 24px 0 16px;
+
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  overscroll-behavior-x: contain;
+  scrollbar-width: thin;
+  scrollbar-color: var(--ink) transparent;
+}
+.lk-quotes:focus-visible { outline: 2px solid var(--ink); outline-offset: 4px; }
+
+.lk-quote {
+  flex: 0 0 min(520px, 82%);
+  scroll-snap-align: start;
+
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 22px 22px 20px;
+  border: 1px solid var(--ink);
+  background: var(--card);
+}
+
+/* длинные отзывы прокручиваются внутри карточки: текст сохраняется
+   целиком, но секция не вырастает до высоты самого разговорчивого */
+.lk-quote-body {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  max-height: 300px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--rule) transparent;
+}
+
+.lk-quote-text {
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+/* подпись прижата к низу карточки — у коротких отзывов рамка
+   не провисает пустотой между текстом и именем */
+.lk-quote-by {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 14px;
+  margin-top: auto;
+  padding-top: 14px;
+  border-top: 1px dashed var(--rule);
+}
+.lk-quote-name { font-size: 14px; font-weight: 700; }
+.lk-quote-src {
+  font-size: 10.5px;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+@media (max-width: 760px) {
+  .lk-quote { padding: 18px 16px 18px; }
+  .lk-quote-text { font-size: 12.5px; }
+
+  /* карточка узкая — тот же текст занимает больше строк. При 300px
+     внутренняя прокрутка появлялась даже у коротких отзывов, и на
+     телефоне получались две полосы сразу. Поднимаем потолок так,
+     чтобы прокручивался только самый длинный. */
+  .lk-quote-body { max-height: 380px; }
+}
+
+
+/* ==========================================================
+   КУРСОР
+   Только десктоп: (hover: hover) and (pointer: fine) отсекает
+   тач — на телефоне и планшете курсора нет и картинку грузить незачем.
+   ВАЖНО: браузеры не умеют анимированные курсоры (.ani — формат Windows,
+   Chrome/Safari/Firefox его игнорируют). Взят первый — «покойный» — кадр
+   исходной анимации, 32×32, остриё в (1, 0).
+   Вторым значением обязателен системный фолбэк, иначе правило отбросится.
+   ========================================================== */
+
+@media (hover: hover) and (pointer: fine) {
+  /* единственное правило вне .lk — иначе поля body и полосы по краям
+     на широком экране (за пределами max-width: 1440px) остались бы
+     с системной стрелкой. Курсор — свойство страницы, а не блока. */
+  html { cursor: url("cursor.png") 1 0, auto; }
+
+  /* ссылкам и кнопкам браузер сам ставит pointer — перебиваем явно */
+  .lk a,
+  .lk button { cursor: url("cursor.png") 1 0, auto; }
+
+  /* нажатие: стрелка загорается лимоном с контуром чернилами — тот же
+     приём, что у кнопок. :active поднимается по дереву до html,
+     поэтому лимон появляется при клике в любом месте страницы. */
+  html:active,
+  .lk a:active,
+  .lk button:active { cursor: url("cursor-active.png") 1 0, auto; }
+}
