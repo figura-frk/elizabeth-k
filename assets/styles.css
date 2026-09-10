@@ -190,7 +190,7 @@
 .lk-lead { display: flex; flex-direction: column; gap: 22px; align-items: flex-start; }
 
 .lk-lead-text {
-  font-size: 24px;
+  font-size: 20px;
   line-height: 1.45;
   /* мера как у .lk-note: лид длинный, на 24em он вытягивался
      в узкий высокий столбик на пол-экрана */
@@ -479,7 +479,7 @@
 
 @media (max-width: 1100px) {
   .lk { --gap: 48px; --side-w: 250px; --pad: 32px; --sec-gap: 52px; }
-  .lk-lead-text { font-size: 22px; }
+  .lk-lead-text { font-size: 18px; }
   .lk-grid--3 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 
@@ -500,7 +500,7 @@
   }
   .lk-portrait { flex: none; max-width: 220px; }
 
-  .lk-lead-text { font-size: 20px; max-width: none; }
+  .lk-lead-text { max-width: none; }
   .lk-foot-text { font-size: 18px; }
 
   .lk-btn { width: 100%; font-size: 13px; padding: 16px 18px; }
@@ -799,7 +799,7 @@ html, body { background: #FAF9F4; }
 
 @media (max-width: 760px) {
   .lk-svc-grid { grid-template-columns: minmax(0, 1fr); }
-  .lk-lead-text { font-size: 19px; }
+  .lk-lead-text { font-size: 16px; }
 
   .lk-note { font-size: 13px; }
 
@@ -942,7 +942,23 @@ html, body { background: #FAF9F4; }
   display: flex;
   align-items: baseline;
   gap: 10px;
+  padding-bottom: 10px;
+}
+/* срок работы прижат к правому краю шапки */
+.lk-case-term {
+  flex: none;
+  margin-left: auto;
+  font-size: 12px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+/* медиум художника — строка под именем */
+.lk-case-medium {
   padding-bottom: 16px;
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: var(--muted);
 }
 .lk-case-no {
   flex: none;
@@ -972,15 +988,20 @@ html, body { background: #FAF9F4; }
   color: var(--muted);
 }
 
-/* запрос художника — цитата, помечена пунктирной линейкой слева */
-.lk-case-quote {
-  padding-left: 14px;
-  border-left: 1px dashed var(--rule);
+/* формулировка задачи — обычный набор */
+.lk-case-goal {
   font-size: 13px;
   line-height: 1.65;
 }
+.lk-case-goal + .lk-case-goal { margin-top: -2px; }
+
+/* прямая речь художника — курсивом, чтобы читалось как цитата */
+.lk-case-quote {
+  font-size: 13px;
+  line-height: 1.65;
+  font-style: italic;
+}
 .lk-case-quote + .lk-case-quote { margin-top: -2px; }
-.lk-case-quote b { font-weight: 700; }
 
 /* маркер держим висячим отступом, а не флексом: у флекс-элемента
    min-width: auto, и на узком экране строка перестаёт сжиматься —
@@ -994,9 +1015,32 @@ html, body { background: #FAF9F4; }
 }
 .lk-case-list li:first-child { padding-top: 0; border-top: none; }
 .lk-case-list li::before {
-  content: "—";
-  margin-right: 8px;
-  color: var(--muted);
+  content: "\2022";           /* • */
+  margin-right: 7px;
+  font-size: 1.4em;
+  line-height: 0;
+  vertical-align: -.05em;
+  color: var(--lk-cursor);
+}
+
+/* успехи — не точка, а галочка: список достижений читается как
+   отмеченный, и это не требует пятого цвета, только другой знак */
+.lk-case-list--win li::before {
+  content: "\2713";           /* ✓ */
+  font-size: 1.15em;
+  line-height: inherit;
+  vertical-align: 0;
+}
+
+/* итоговая цифра по заявкам — единственное «главное» в карточке,
+   поэтому единственное, что имеет право на лимон */
+.lk-case-score {
+  margin-top: 4px;
+  padding: 9px 11px;
+  background: var(--lemon);
+  font-size: 12.5px;
+  font-weight: 700;
+  line-height: 1.5;
 }
 
 /* ключевой результат — та же подчёркивающая линия, что у ссылок в футере */
@@ -1004,9 +1048,6 @@ html, body { background: #FAF9F4; }
   font-weight: 700;
   box-shadow: inset 0 -1px 0 var(--ink);
 }
-
-/* «не получилось» приглушено: это честная сноска, а не заголовок */
-.lk-case-block--flop .lk-case-list li { color: var(--muted); }
 
 .lk-case-list a { box-shadow: inset 0 -1px 0 var(--muted); }
 .lk-case-list a:hover {
@@ -1023,7 +1064,10 @@ html, body { background: #FAF9F4; }
 @media (max-width: 760px) {
   .lk-case { padding: 18px 16px 20px; }
   .lk-case-name { font-size: 17px; }
-  .lk-case-quote { font-size: 12.5px; padding-left: 12px; }
+  .lk-case-term { font-size: 11px; }
+  .lk-case-medium { font-size: 12px; }
+  .lk-case-goal,
+  .lk-case-quote { font-size: 12.5px; }
 }
 
 
@@ -1144,4 +1188,28 @@ html, body { background: #FAF9F4; }
   html:active,
   .lk a:active,
   .lk button:active { cursor: url("cursor-active.png") 1 0, auto; }
+}
+
+
+/* ==========================================================
+   ПОЛОСЫ ПРОКРУТКИ — планшет и телефон
+   Курсора на тач-устройствах нет, и его розовый остаётся не у дел.
+   Отдаём цвет полосе прокрутки: единственное, что движется по экрану
+   вслед за пальцем, окрашено ровно так же, как курсор на десктопе.
+   Выше 1100px полосы остаются чернильными — там работает курсор.
+
+   Правило живёт вне .lk по той же причине, что и курсор: полоса
+   принадлежит странице и внутренним скроллерам, а не блоку.
+   ========================================================== */
+
+/* не палитра сайта, а собственный цвет курсора из cursor.png */
+:root { --lk-cursor: #FF3399; }
+
+@media (max-width: 1100px) {
+  html,
+  .lk-quotes,
+  .lk-quote-body {
+    scrollbar-width: thin;
+    scrollbar-color: var(--lk-cursor) transparent;
+  }
 }
