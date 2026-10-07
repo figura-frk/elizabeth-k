@@ -1,0 +1,4 @@
+{
+  "preview": "vercel deploy --yes",
+  "publish": "vercel deploy --prod --yes"
+}

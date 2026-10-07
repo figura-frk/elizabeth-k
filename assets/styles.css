@@ -1,4 +1,83 @@
 /* ==========================================================
+   ШРИФТ
+   Montserrat лежит в assets/fonts/ рядом с сайтом, а не грузится
+   с Google: иначе страница перестаёт открываться из папки и отдаёт
+   запрос на чужой домен. Подключены только те подмножества, которые
+   на сайте реально встречаются — кириллица и латиница; latin-ext
+   и cyrillic-ext не нужны (проверено по текстам всех пяти страниц)
+   и выкинуты, иначе файлов было бы вдвое больше.
+   Начертания настоящие, 400 и 700 — ничего не синтезируется.
+   ========================================================== */
+
+/* Safira March — имя в шапке и крупные заголовки: «Что я делаю»,
+   «Полезные материалы». Файл урезан до двадцати двух символов, из которых
+   набраны ровно эти строки: 133 KB исходника превратились в 5 KB. Если
+   понадобится набрать этим шрифтом что-то ещё — пересобрать подмножество,
+   других букв в файле физически нет (текст просто уедет в запасной шрифт).
+   ВНИМАНИЕ С ЛИЦЕНЗИЕЙ: это версия Personal Use Only, в метаданных файла
+   прямо сказано, что коммерческое использование не разрешено. Сайт продаёт
+   услуги. Лицензия покупается на din-studio.com/product/safira-march/ —
+   после покупки достаточно пересобрать подмножество из купленного файла
+   под тем же именем. */
+@font-face {
+  font-family: 'Safira March';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('fonts/safira-march-display.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Montserrat';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('fonts/montserrat-cyrillic-400.woff2') format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+@font-face {
+  font-family: 'Montserrat';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('fonts/montserrat-latin-400.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Montserrat';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('fonts/montserrat-cyrillic-700.woff2') format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+@font-face {
+  font-family: 'Montserrat';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('fonts/montserrat-latin-700.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Montserrat';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url('fonts/montserrat-cyrillic-400-italic.woff2') format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+@font-face {
+  font-family: 'Montserrat';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url('fonts/montserrat-latin-400-italic.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+
+/* ==========================================================
    Елизавета Кистень — стили главной
    Всё заперто внутри .lk — можно безопасно добавлять чужие блоки рядом
    ========================================================== */
@@ -6,16 +85,17 @@
 .lk {
   /* ---- токены ---- */
   --ink:      #0A0A0A;
-  --paper:    #FAF9F4;  /* газетная бумага, почти белая */
+  --paper:    #FFFFFF;  /* белая бумага */
   --card:     transparent;  /* карточки без заливки — бумага и текстура проходят насквозь */
   --lemon:    #E8FF52;
   --muted:    #85817A;
-  --rule:     #E1DED4;
+  --rule:     #E6E6E6;  /* волосяная линейка — еле видна */
+  --rule-2:   #D0D0D0;  /* построже: заголовки секций, футер, рамки */
   --wash:     #F1EFE7;
 
   --pad:      56px;
   --gap:      44px;   /* половина, вторая половина — паддинг у .lk-main */
-  --side-w:   300px;
+  --side-w:   240px;
   --sec-gap:  64px;
 
   /* ---- каркас ---- */
@@ -31,12 +111,17 @@
 
   background: var(--paper);
   color: var(--ink);
-  font-family: 'Courier New', Courier, 'Nimbus Mono PS', 'Liberation Mono', monospace;
+  font-family: 'Montserrat', -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   font-size: 14px;
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
 }
 
+/* Машинописный голос остаётся за заголовками и «штампами»: всё, что
+   набрано капителью с разрядкой, все номера и индексы. Проза — вся
+   проза, включая списки, кнопки и навигацию — идёт Montserrat.
+   Моноширинный держит ещё и колонки цифр (годы в CV, индексы тем)
+   выровненными — поэтому они тоже тут. */
 .lk *,
 .lk *::before,
 .lk *::after { box-sizing: border-box; }
@@ -54,7 +139,8 @@
 }
 
 .lk a:focus-visible,
-.lk button:focus-visible {
+.lk button:focus-visible,
+.lk summary:focus-visible {
   outline: 2px solid var(--ink);
   outline-offset: 3px;
 }
@@ -87,10 +173,20 @@
 .lk-name a { display: inline; }
 
 .lk-name {
-  font-size: 26px;
-  font-weight: 700;
-  line-height: 1.25;
-  letter-spacing: .5px;
+  font-family: 'Safira March', 'Courier New', Courier, monospace;
+  font-size: 40px;
+  /* в Safira March только Regular — 700 браузер подделал бы наклоном
+     и утолщением, а синтезированные начертания на сайте запрещены */
+  font-weight: 400;
+  line-height: 1.15;
+  letter-spacing: 0;
+}
+
+/* В тире 761-1100px сайдбар всего 205px, а «Елизавета» на 40px занимает
+   217px вместе с полями лимонной марки — имя обрезало. На мобильном
+   сайдбар во всю ширину, там кегль возвращается. */
+@media (max-width: 1100px) and (min-width: 761px) {
+  .lk-name { font-size: 36px; }
 }
 
 /* лимонная подсветка имени — не блок, а маркер по тексту */
@@ -113,27 +209,36 @@
 .lk-nav { display: flex; flex-direction: column; gap: 9px; }
 
 .lk-nav a {
+  position: relative;
   font-size: 14px;
-  font-weight: 700;
+  font-weight: 400;
   line-height: 1.3;
   width: fit-content;
-  box-shadow: inset 0 -1px 0 transparent;
 }
-.lk-nav a:hover { box-shadow: inset 0 -1px 0 var(--ink); }
 
-/* текущий раздел: лимонный маркер, тот же приём, что у имени */
-.lk-nav a[aria-current="page"] {
-  background: var(--lemon);
-  padding: 1px 6px 1px 4px;
-  margin-left: -4px;
+/* Подчёркивание рисуем отдельной линией, а не рамкой у самой ссылки:
+   на мобильном у неё вертикальный паддинг ради тач-цели в 44px, и рамка
+   уехала бы на 13px ниже текста. */
+.lk-nav a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-bottom: 1px solid transparent;
+  transition: border-color .12s ease;
 }
+.lk-nav a:hover::after            { border-bottom-color: var(--rule-2); }
+
+/* текущий раздел — тонкая линия вместо лимонной подложки */
+.lk-nav a[aria-current="page"]::after { border-bottom-color: var(--ink); }
 
 /* фото показывается целиком, в родных пропорциях — не кадрируется.
    Забирает ровно ту высоту, что осталась, и уменьшается вместе с окном. */
 .lk-portrait {
   flex: 1 1 auto;
   min-height: 0;
-  max-width: 260px;
+  max-width: 210px;
   background: none;
 
   display: flex;
@@ -163,7 +268,7 @@
   gap: 12px;
   padding: 9px 0;
   font-size: 12px;
-  border-bottom: 1px dashed var(--rule);
+  border-bottom: 1px solid var(--rule);
 }
 .lk-contact span:last-child { color: var(--muted); }
 .lk-contact:hover { background: var(--lemon); padding-left: 8px; padding-right: 8px; }
@@ -179,11 +284,11 @@
   gap: var(--sec-gap);
   min-width: 0;
 
-  /* вертикальная пунктирная линия между колонками.
+  /* вертикальная линия между колонками.
      Живёт на .lk-main, потому что это самый высокий элемент —
      линия тянется на всю страницу, а не только на высоту сайдбара. */
   padding-left: 44px;
-  border-left: 1px dashed var(--rule);
+  border-left: 1px solid var(--rule);
 }
 
 /* ---- 01 лид ---- */
@@ -192,8 +297,7 @@
 .lk-lead-text {
   font-size: 20px;
   line-height: 1.45;
-  /* мера как у .lk-note: лид длинный, на 24em он вытягивался
-     в узкий высокий столбик на пол-экрана */
+  /* лид длинный: на 24em он вытягивался в узкий высокий столбик */
   max-width: 46em;
 }
 
@@ -203,7 +307,7 @@
   gap: 9px;
   padding: 6px 12px 6px 8px;
   background: transparent;
-  border: 1px dashed var(--rule);
+  border: 1px solid var(--rule);
   font-size: 12px;
 }
 .lk-dot {
@@ -233,13 +337,6 @@
 
 .lk-btn:hover { background: var(--ink); color: var(--paper); }
 
-.lk-cta { display: flex; flex-direction: column; gap: 14px; }
-.lk-note {
-  font-size: 14px;
-  line-height: 1.7;
-  max-width: 46em;
-}
-
 /* ---- заголовок секции ---- */
 .lk-head {
   display: flex;
@@ -247,7 +344,7 @@
   align-items: center;
   gap: 20px;
   padding: 12px 0 14px;
-  border-top: 1px dashed var(--ink);
+  border-top: 1px solid var(--rule-2);
 }
 .lk-head h2 {
   font-size: 11px;
@@ -255,6 +352,25 @@
   letter-spacing: 1.6px;
   text-transform: uppercase;
 }
+
+/* Заголовок страницы, набранный тем же шрифтом, что и имя.
+   Обычный .lk-head — это штамп 11px капителью с разрядкой; акцидентная
+   антиква в таком виде нечитаема, поэтому здесь кегль крупный,
+   капитель и разрядка сняты. */
+.lk-head--display { align-items: baseline; padding-bottom: 18px; }
+.lk-head--display h2 {
+  font-family: 'Safira March', 'Courier New', Courier, monospace;
+  font-size: 32px;
+  font-weight: 400;      /* в шрифте только Regular */
+  line-height: 1.1;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+@media (max-width: 760px) {
+  .lk-head--display h2 { font-size: 26px; }
+}
+
 .lk-count {
   flex: none;
   /* счётчик не переносится по словам — иначе на узком экране длинный
@@ -276,7 +392,7 @@
 .lk-topic { padding: 0 22px; }
 .lk-topic:first-child { padding-left: 0; }
 .lk-topic:last-child  { padding-right: 0; }
-.lk-topic + .lk-topic { border-left: 1px dashed var(--rule); }
+.lk-topic + .lk-topic { border-left: 1px solid var(--rule); }
 
 .lk-topic-head {
   display: flex;
@@ -302,7 +418,7 @@
   align-items: flex-start;
   gap: 12px;
   padding: 11px 0;
-  border-top: 1px dashed var(--rule);
+  border-top: 1px solid var(--rule);
   font-size: 12.5px;
   line-height: 1.55;
 }
@@ -317,22 +433,6 @@
 
 /* ---- 04 услуги ---- */
 
-/* входной баннер: единственная строка во всю ширину */
-.lk-svc-entry {
-  display: flex;
-  align-items: baseline;
-  gap: 20px;
-  margin-top: 24px;
-  padding: 16px 18px;
-  background: var(--lemon);
-  border: 1px solid var(--ink);
-}
-.lk-svc-entry-title { font-size: 16px; font-weight: 700; }
-.lk-svc-entry-meta  { font-size: 12px; margin-left: auto; }
-.lk-svc-entry-go    { font-size: 14px; font-weight: 700; }
-.lk-svc-entry:hover { background: var(--ink); color: var(--paper); }
-
-/* сетка карточек-объявлений */
 .lk-svc-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -340,74 +440,92 @@
   margin-top: 24px;
 }
 
-/* карточка: пунктирный контур — «вырезать по линии», как в газетной рубрике */
+/* Карточка — целиком ссылка: кликабельно всё поле, а не одна кнопка.
+   Скруглённые углы — единственное место на сайте, где они есть, так
+   просила заказчица. На ховер карточка приподнимается; тень нужна именно
+   для подъёма — без неё сдвиг читается как дрожание, а не как отрыв. */
 .lk-svc {
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  padding: 18px 18px 16px;
-  border: 1px dashed var(--ink);
+  gap: 14px;
+  padding: 22px 22px 18px;
+  border: 1px solid var(--rule-2);
   background: var(--card);
 }
-.lk-svc:hover { background: var(--lemon); }
 
-.lk-svc-no {
-  font-style: normal;
-  font-size: 11px;
-  letter-spacing: 1px;
+.lk-svc-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 14px;
+}
+
+.lk-svc-title {
+  /* без min-width: 0 заголовок не сжимается ниже своей максимальной
+     ширины, и вместо переноса по словам цена сваливалась под него */
+  min-width: 0;
+  font-size: 17px;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+/* цена — главное число карточки, срок под ней мелким штампом */
+.lk-svc-price {
+  flex: none;
+  text-align: right;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.2;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+.lk-svc-term {
+  display: block;
+  margin-top: 4px;
+  font-size: 10px;
+  letter-spacing: 1.1px;
+  text-transform: uppercase;
   color: var(--muted);
 }
-.lk-svc:hover .lk-svc-no { color: var(--ink); }
-
-.lk-svc-title { font-size: 17px; font-weight: 700; line-height: 1.3; }
 
 .lk-svc-desc {
   font-size: 12.5px;
   line-height: 1.6;
   color: var(--muted);
-  flex: 1 1 auto;
-}
-.lk-svc:hover .lk-svc-desc { color: var(--ink); }
-
-/* печатная табличка характеристик */
-.lk-svc-spec { display: flex; flex-direction: column; }
-.lk-svc-spec > div {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  gap: 12px;
-  padding: 7px 0;
-  border-top: 1px dashed var(--rule);
-}
-.lk-svc:hover .lk-svc-spec > div { border-top-color: var(--ink); }
-
-.lk-svc-spec dt {
-  font-size: 10.5px;
-  letter-spacing: 1.2px;
-  text-transform: uppercase;
-  color: var(--muted);
-}
-.lk-svc:hover .lk-svc-spec dt { color: var(--ink); }
-.lk-svc-spec dd {
-  margin: 0;
-  font-size: 13px;
-  font-weight: 700;
-  text-align: right;
-  font-variant-numeric: tabular-nums;
+  flex: 1 1 auto;   /* прижимает призыв к низу при разной длине описаний */
 }
 
-.lk-svc-go {
-  display: flex;
-  justify-content: space-between;
+/* Призыв — строка со стрелкой вместо кнопки в рамке: кликабельна
+   вся карточка, поэтому обводить его ещё раз незачем. Стрелка уезжает
+   вправо на ховер. */
+.lk-svc-cta {
+  display: inline-flex;
   align-items: center;
-  gap: 10px;
-  padding-top: 12px;
-  border-top: 1px solid var(--ink);
-  font-size: 12px;
+  gap: 9px;
+  margin-top: 4px;
+  font-size: 12.5px;
   font-weight: 700;
 }
+.lk-svc-arrow {
+  font-style: normal;
+  transition: transform .3s cubic-bezier(.22, .8, .3, 1);
+}
+.lk-svc:hover .lk-svc-arrow { transform: translateX(6px); }
 
-.lk-section-cta { padding-top: 20px; }
+/* Двум карточкам в ряд нужно по ~353px: «профессионального» в Montserrat
+   Bold занимает 190px, плюс самая длинная цена 109px и зазор. Такая ширина
+   набирается только выше 1200px — ниже уходим в одну колонку.
+   (В Courier то же слово было 174px, поэтому порог был ниже.) */
+@media (max-width: 1200px) {
+  .lk-svc-grid { grid-template-columns: minmax(0, 1fr); }
+}
+
+/* На совсем узких экранах даже в одну колонку карточка уже, чем слово
+   «профессионального» плюс цена, — там они встают друг под друга. */
+@media (max-width: 400px) {
+  .lk-svc-head { display: block; }
+  .lk-svc-price { margin-top: 8px; text-align: left; }
+}
 
 /* ---- сетки карточек ---- */
 .lk-grid { display: grid; gap: 20px; padding-top: 24px; }
@@ -418,10 +536,9 @@
   flex-direction: column;
   gap: 14px;
   padding: 18px 20px 20px;
-  border: 1px solid var(--ink);
+  border: 1px solid var(--rule-2);
   background: var(--card);
 }
-.lk-card--lemon { background: var(--lemon); }
 
 .lk-kind {
   font-style: normal;
@@ -430,7 +547,6 @@
   color: var(--muted);
 }
 .lk-kind { font-size: 10px; font-weight: 700; letter-spacing: 1.4px; }
-.lk-card--lemon .lk-kind { color: var(--ink); }
 
 .lk-card h3 { font-size: 18px; font-weight: 700; line-height: 1.3; }
 .lk-card p  { font-size: 12.5px; line-height: 1.6; }
@@ -440,7 +556,6 @@
 .lk-grid--3 .lk-card > div { display: flex; flex-direction: column; gap: 10px; }
 .lk-grid--3 .lk-card h3 { font-size: 17px; }
 .lk-grid--3 .lk-card p { font-size: 12px; color: var(--muted); }
-.lk-card--lemon p { color: var(--ink); }
 
 .lk-get {
   display: flex;
@@ -448,11 +563,10 @@
   align-items: center;
   gap: 10px;
   padding-top: 12px;
-  border-top: 1px dashed var(--rule);
+  border-top: 1px solid var(--rule);
   font-size: 12px;
   font-weight: 700;
 }
-.lk-card--lemon .lk-get { border-top-color: var(--ink); }
 .lk-get:hover { background: var(--ink); color: var(--paper); padding-left: 8px; padding-right: 8px; }
 
 /* ---- 07 футер ---- */
@@ -461,7 +575,7 @@
   flex-direction: column;
   gap: 26px;
   padding-top: 34px;
-  border-top: 2px dashed var(--ink);
+  border-top: 2px solid var(--rule-2);
 }
 .lk-foot-text { font-size: 24px; line-height: 1.45; }
 .lk-foot-meta {
@@ -478,7 +592,7 @@
    ========================================================== */
 
 @media (max-width: 1100px) {
-  .lk { --gap: 48px; --side-w: 250px; --pad: 32px; --sec-gap: 52px; }
+  .lk { --gap: 48px; --side-w: 205px; --pad: 32px; --sec-gap: 52px; }
   .lk-lead-text { font-size: 18px; }
   .lk-grid--3 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
@@ -512,15 +626,6 @@
   .lk-chips { gap: 6px; }
   .lk-chip { font-size: 11px; padding: 7px 10px; }
 
-  .lk-svc-grid { grid-template-columns: minmax(0, 1fr); }
-
-  .lk-svc-entry {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 6px;
-  }
-  .lk-svc-entry-meta { margin-left: 0; }
-  .lk-svc-entry-go { display: none; }
 
   .lk-foot-meta { flex-direction: column; gap: 6px; }
 }
@@ -540,6 +645,7 @@
 
 /* тач-устройства: ховеры не липнут */
 @media (hover: none) {
+  .lk-svc:hover .lk-svc-arrow { transform: none; }
   .lk-index a:hover,
   .lk-services a:hover,
   .lk-contact:hover,
@@ -561,7 +667,7 @@
 
 /* фон за пределами колонки (широкие экраны) */
 html { scroll-behavior: smooth; }
-html, body { background: #FAF9F4; }
+html, body { background: #FFFFFF; }
 
 .lk {
   background-color: var(--paper);
@@ -650,6 +756,22 @@ html, body { background: #FAF9F4; }
 
 
 /* ==========================================================
+   ФОН БЕЛЫЙ — текстура выключена
+   Сами слои ниже/выше не тронуты: при --paper: #FAF9F4 они давали
+   газетную бумагу, но поверх белого все три умножаются и уводили фон
+   в кремовый #F5F5F3 — белым он не выглядел.
+   ЧТОБЫ ВЕРНУТЬ БУМАГУ: удалить этот блок и поставить --paper: #FAF9F4
+   (строка 9) и такой же цвет в `html, body`.
+   ========================================================== */
+
+.lk { background-image: none; }          /* растр офсетной печати */
+
+.lk::before,                              /* зерно волокна */
+.lk::after,                               /* пятна старения */
+.lk-paper { display: none; }              /* заломы мятой бумаги */
+
+
+/* ==========================================================
    СТРАНИЦА «ОБО МНЕ»
    ========================================================== */
 
@@ -681,11 +803,11 @@ html, body { background: #FAF9F4; }
   gap: 0;
 }
 
-/* вертикальные пунктиры между колонками — как между сайдбаром и контентом */
+/* вертикальные линейки между колонками — как между сайдбаром и контентом */
 .lk-col { padding: 0 22px; }
 .lk-col:first-child { padding-left: 0; }
 .lk-col:last-child  { padding-right: 0; }
-.lk-col + .lk-col { border-left: 1px dashed var(--rule); }
+.lk-col + .lk-col { border-left: 1px solid var(--rule); }
 
 .lk-cv + .lk-cv { margin-top: 34px; }
 
@@ -704,7 +826,7 @@ html, body { background: #FAF9F4; }
   grid-template-columns: 46px minmax(0, 1fr);
   gap: 12px;
   padding: 11px 0;
-  border-top: 1px dashed var(--rule);
+  border-top: 1px solid var(--rule);
 }
 .lk-cv-item p { font-size: 12.5px; line-height: 1.6; }
 
@@ -722,20 +844,28 @@ html, body { background: #FAF9F4; }
   flex-direction: column;
   gap: 8px;
   padding: 14px 0;
-  border-top: 1px dashed var(--rule);
+  border-top: 1px solid var(--rule);
 }
 .lk-job h4 { margin: 0; font-size: 13.5px; font-weight: 700; line-height: 1.4; }
 .lk-job p  { font-size: 12.5px; line-height: 1.65; color: var(--muted); }
 
 @media (max-width: 1100px) {
+  /* В две колонки резюме влезает только выше 900px: ниже на текст остаётся
+     ~115px, а в нём слова вроде «исследовательский» (129px) не помещаются
+     и вылезают за край. */
   .lk-cols { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .lk-col:nth-child(3) {
     padding-left: 0;
     border-left: none;
-    border-top: 1px dashed var(--rule);
+    border-top: 1px solid var(--rule);
     padding-top: 28px;
     margin-top: 28px;
   }
+}
+
+@media (max-width: 900px) {
+  .lk-cols { grid-template-columns: minmax(0, 1fr); }
+  .lk-col:nth-child(3) { padding-left: 0; border-left: none; }
 }
 
 @media (max-width: 760px) {
@@ -745,7 +875,7 @@ html, body { background: #FAF9F4; }
     border-left: none;
   }
   .lk-col + .lk-col {
-    border-top: 1px dashed var(--rule);
+    border-top: 1px solid var(--rule);
     padding-top: 28px;
     margin-top: 28px;
   }
@@ -757,26 +887,16 @@ html, body { background: #FAF9F4; }
 }
 
 
-/* примечание к формату — курсив на лимонной подложке */
-.lk-svc-note {
-  padding: 8px 10px;
-  background: var(--lemon);
-  font-size: 11.5px;
-  font-style: italic;
-  line-height: 1.55;
-}
-.lk-svc:hover .lk-svc-note { background: transparent; border: 1px dashed var(--ink); }
 
 /* метка «бесплатно / платно» у материалов */
 .lk-tag {
   margin-left: 8px;
   padding: 2px 6px;
   background: transparent;
-  border: 1px dashed var(--ink);
+  border: 1px solid var(--rule-2);
   font-size: 9.5px;
   letter-spacing: 1px;
 }
-.lk-card--lemon .lk-tag { background: var(--lemon); border-style: solid; }
 
 /* «наверх» в футере */
 .lk-top {
@@ -791,17 +911,15 @@ html, body { background: #FAF9F4; }
   .lk-topic { padding: 0; }
   .lk-topic + .lk-topic {
     border-left: none;
-    border-top: 1px dashed var(--rule);
+    border-top: 1px solid var(--rule);
     margin-top: 26px;
     padding-top: 26px;
   }
 }
 
 @media (max-width: 760px) {
-  .lk-svc-grid { grid-template-columns: minmax(0, 1fr); }
   .lk-lead-text { font-size: 16px; }
 
-  .lk-note { font-size: 13px; }
 
   /* Сайдбар раскрывается в родительскую сетку (display: contents),
      и дальше его части раскладываются через order. До этого на телефоне
@@ -835,7 +953,7 @@ html, body { background: #FAF9F4; }
      Ровно 44px = 18px текста + 13px паддинга сверху и снизу. */
   .lk-nav { gap: 2px; }
   .lk-nav a { padding: 13px 0; }
-  .lk-nav a[aria-current="page"] { padding: 13px 6px 13px 4px; }
+  .lk-nav a::after { bottom: 13px; }
 
   /* контактные строки были 38px — добираем до тех же 44px */
   .lk-contact { padding: 12px 0; }
@@ -879,7 +997,7 @@ html, body { background: #FAF9F4; }
   background: var(--lemon);
   border: 1px solid var(--ink);
   color: var(--ink);
-  font: 700 13px/1.2 'Courier New', Courier, monospace;
+  font: 700 13px/1.2 'Montserrat', -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   text-decoration: none;
 }
 .lk-skip:focus { left: 12px; top: 12px; }
@@ -918,75 +1036,158 @@ html, body { background: #FAF9F4; }
 /* ==========================================================
    СТРАНИЦА «КЕЙСЫ»
    Один кейс — одна карточка. Рамка сплошная (правило: сплошные
-   только у кнопок и карточек), всё внутри разделено пунктиром.
+   только у кнопок и карточек), всё внутри разделено волосяной линейкой.
    Лимон — только на номере кейса, как на номерах разделов.
    ========================================================== */
 
+/* ==========================================================
+   КЕЙСЫ
+   Каждый кейс — свёрнутая строка на <details>: номер, имя, срок и плюс.
+   Три раздела (долгосрочная работа, сопровождение, консультации)
+   остаются открытыми списками, схлопываются только сами кейсы.
+   ========================================================== */
+
 .lk-cases {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 16px;
-  padding-top: 24px;
-  align-items: start;
+  display: flex;
+  flex-direction: column;
+  padding-top: 18px;
 }
 
 .lk-case {
-  display: flex;
-  flex-direction: column;
-  padding: 20px 20px 22px;
-  border: 1px solid var(--ink);
-  background: var(--card);
+  max-width: 640px;
+  border-top: 1px solid var(--rule);
 }
+.lk-case:last-child { border-bottom: 1px solid var(--rule); }
 
-.lk-case-head {
+/* строка кейса */
+.lk-case-head { list-style: none; padding: 14px 0; }
+.lk-case-head::-webkit-details-marker { display: none; }
+
+.lk-case-name {
   display: flex;
   align-items: baseline;
-  gap: 10px;
-  padding-bottom: 10px;
+  gap: 12px;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.3;
 }
-/* срок работы прижат к правому краю шапки */
-.lk-case-term {
+.lk-case-who { font-family: 'Montserrat', sans-serif; font-weight: 700; }
+
+.lk-case-no {
   flex: none;
+  min-width: 22px;
+  font-size: 11px;
+  color: var(--muted);
+}
+
+.lk-case-term {
   margin-left: auto;
-  font-size: 12px;
-  font-weight: 700;
+  padding-right: 30px;    /* место под плюс */
+  flex: none;
+  font-size: 11px;
+  color: var(--muted);
   white-space: nowrap;
 }
 
+/* плюс кейса — тот же приём, что у секций, только мельче */
+.lk-case-head::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  width: 13px;
+  height: 13px;
+  background:
+    linear-gradient(var(--ink), var(--ink)) center / 100% 1.5px no-repeat,
+    linear-gradient(var(--ink), var(--ink)) center / 1.5px 100% no-repeat;
+  transition: transform .3s cubic-bezier(.4, 0, .2, 1);
+}
+.lk-case { position: relative; }
+.lk-case-head::after { top: 20px; }
+.lk-case[open] .lk-case-head::after { transform: rotate(135deg); }
+
+.lk-case-body { padding-bottom: 26px; }
+
+/* Ступенчатое появление: блоки кейса выезжают один за другим.
+   Задержка растёт от блока к блоку — раскрытие читается как
+   разворачивание документа, а не как мгновенная подстановка. */
+@keyframes lk-case-in {
+  from { opacity: 0; transform: translateY(12px); }
+}
+.lk-case[open] .lk-case-medium,
+.lk-case[open] .lk-case-block {
+  animation: lk-case-in .42s cubic-bezier(.22, .8, .3, 1) both;
+}
+.lk-case[open] .lk-case-medium            { animation-delay: .02s; }
+.lk-case[open] .lk-case-block:nth-of-type(1) { animation-delay: .09s; }
+.lk-case[open] .lk-case-block:nth-of-type(2) { animation-delay: .16s; }
+.lk-case[open] .lk-case-block:nth-of-type(3) { animation-delay: .23s; }
+
+@media (prefers-reduced-motion: reduce) {
+  .lk-case[open] .lk-case-medium,
+  .lk-case[open] .lk-case-block { animation: none; }
+}
+
+/* Маркер — коробка фиксированной ширины, а не глиф плюс отступ:
+   в пропорциональном шрифте «•» и «✓» разной ширины, и висячий отступ
+   разъезжается между первой строкой и переносами. */
+.lk-case-list li {
+  padding: 9px 0 9px 18px;
+  text-indent: -18px;
+  border-top: 1px solid var(--rule);
+  font-size: 12.5px;
+  line-height: 1.55;
+}
+.lk-case-list li:first-child { padding-top: 0; border-top: none; }
+
+.lk-case-list li::before {
+  content: "\2022";           /* • */
+  display: inline-block;
+  width: 18px;
+  text-indent: 0;
+  /* в Montserrat «•» рисуется мельче, чем в Courier, — добираем кегль,
+     чтобы точка осталась такой же заметной, как была */
+  font-size: 1.75em;
+  line-height: 0;
+  vertical-align: -.08em;
+  color: var(--lk-cursor);
+}
+
+/* успехи — не точка, а галочка: список достижений читается как
+   отмеченный, и это не требует пятого цвета, только другой знак */
+.lk-case-list--win li::before {
+  content: "\2713";           /* ✓ */
+  font-size: 1.15em;
+  line-height: inherit;
+  vertical-align: 0;
+}
+
+/* итоговая цифра по заявкам — единственное «главное» в карточке,
+   поэтому единственное, что имеет право на лимон */
 /* медиум художника — строка под именем */
 .lk-case-medium {
-  padding-bottom: 16px;
+  padding-bottom: 14px;
   font-size: 12.5px;
   line-height: 1.5;
   color: var(--muted);
 }
-.lk-case-no {
-  flex: none;
-  padding: 2px 5px;
-  background: var(--lemon);
-  font-style: normal;
-  font-size: 10px;
-  letter-spacing: 1px;
-}
-.lk-case-name { font-size: 18px; font-weight: 700; line-height: 1.3; }
 
-/* блок кейса: запрос / что сделали / успехи / не получилось */
+/* подпись блока — мелкая капитель с разрядкой, как остальные штампы */
+.lk-case-label {
+  font-size: 10.5px;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+/* блок кейса: запрос / успехи / как мы это сделали */
 .lk-case-block {
   display: flex;
   flex-direction: column;
   gap: 12px;
   padding: 14px 0 0;
-  border-top: 1px dashed var(--rule);
+  border-top: 1px solid var(--rule);
 }
 .lk-case-block + .lk-case-block { margin-top: 16px; }
-
-.lk-case-label {
-  font-size: 10.5px;
-  font-weight: 700;
-  letter-spacing: 1.2px;
-  text-transform: uppercase;
-  color: var(--muted);
-}
 
 /* формулировка задачи — обычный набор */
 .lk-case-goal {
@@ -1003,41 +1204,13 @@ html, body { background: #FAF9F4; }
 }
 .lk-case-quote + .lk-case-quote { margin-top: -2px; }
 
-/* маркер держим висячим отступом, а не флексом: у флекс-элемента
-   min-width: auto, и на узком экране строка перестаёт сжиматься —
-   страница уезжает в горизонтальный скролл */
-.lk-case-list li {
-  padding: 9px 0 9px 18px;
-  text-indent: -18px;
-  border-top: 1px dashed var(--rule);
-  font-size: 12.5px;
-  line-height: 1.55;
-}
-.lk-case-list li:first-child { padding-top: 0; border-top: none; }
-.lk-case-list li::before {
-  content: "\2022";           /* • */
-  margin-right: 7px;
-  font-size: 1.4em;
-  line-height: 0;
-  vertical-align: -.05em;
-  color: var(--lk-cursor);
-}
-
-/* успехи — не точка, а галочка: список достижений читается как
-   отмеченный, и это не требует пятого цвета, только другой знак */
-.lk-case-list--win li::before {
-  content: "\2713";           /* ✓ */
-  font-size: 1.15em;
-  line-height: inherit;
-  vertical-align: 0;
-}
-
-/* итоговая цифра по заявкам — единственное «главное» в карточке,
-   поэтому единственное, что имеет право на лимон */
+/* итог по заявкам — без лимона: выделяем линейками сверху и снизу,
+   получается «строка статистики», а не цветное пятно */
 .lk-case-score {
-  margin-top: 4px;
-  padding: 9px 11px;
-  background: var(--lemon);
+  margin-top: 8px;
+  padding: 10px 0;
+  border-top: 1px solid var(--rule-2);
+  border-bottom: 1px solid var(--rule-2);
   font-size: 12.5px;
   font-weight: 700;
   line-height: 1.5;
@@ -1055,14 +1228,7 @@ html, body { background: #FAF9F4; }
   box-shadow: inset 0 -1px 0 var(--ink);
 }
 
-/* карточки длинные и текстовые — в две колонки им тесно раньше,
-   чем карточкам услуг, поэтому разворачиваем в одну уже на 1100 */
-@media (max-width: 1100px) {
-  .lk-cases { grid-template-columns: minmax(0, 1fr); }
-}
-
 @media (max-width: 760px) {
-  .lk-case { padding: 18px 16px 20px; }
   .lk-case-name { font-size: 17px; }
   .lk-case-term { font-size: 11px; }
   .lk-case-medium { font-size: 12px; }
@@ -1109,7 +1275,7 @@ html, body { background: #FAF9F4; }
   flex-direction: column;
   gap: 16px;
   padding: 22px 22px 20px;
-  border: 1px solid var(--ink);
+  border: 1px solid var(--rule-2);
   background: var(--card);
 }
 
@@ -1139,16 +1305,9 @@ html, body { background: #FAF9F4; }
   gap: 14px;
   margin-top: auto;
   padding-top: 14px;
-  border-top: 1px dashed var(--rule);
+  border-top: 1px solid var(--rule);
 }
 .lk-quote-name { font-size: 14px; font-weight: 700; }
-.lk-quote-src {
-  font-size: 10.5px;
-  letter-spacing: 1.2px;
-  text-transform: uppercase;
-  color: var(--muted);
-  white-space: nowrap;
-}
 
 @media (max-width: 760px) {
   .lk-quote { padding: 18px 16px 18px; }
@@ -1180,14 +1339,16 @@ html, body { background: #FAF9F4; }
 
   /* ссылкам и кнопкам браузер сам ставит pointer — перебиваем явно */
   .lk a,
-  .lk button { cursor: url("cursor.png") 1 0, auto; }
+  .lk button,
+  .lk summary { cursor: url("cursor.png") 1 0, auto; }
 
   /* нажатие: стрелка загорается лимоном с контуром чернилами — тот же
      приём, что у кнопок. :active поднимается по дереву до html,
      поэтому лимон появляется при клике в любом месте страницы. */
   html:active,
   .lk a:active,
-  .lk button:active { cursor: url("cursor-active.png") 1 0, auto; }
+  .lk button:active,
+  .lk summary:active { cursor: url("cursor-active.png") 1 0, auto; }
 }
 
 
@@ -1212,4 +1373,180 @@ html, body { background: #FAF9F4; }
     scrollbar-width: thin;
     scrollbar-color: var(--lk-cursor) transparent;
   }
+}
+
+
+/* ==========================================================
+   АККОРДЕОН
+   На <details>/<summary>, без единой строчки JS: разворачивание,
+   клавиатура и чтение скринридером работают сами. Кликабельна вся
+   строка заголовка (так устроен <summary>), плюсик — видимый признак
+   того, что это кнопка.
+   ========================================================== */
+
+.lk-fold summary { list-style: none; }
+.lk-fold summary::-webkit-details-marker { display: none; }
+
+.lk-fold-head {
+  align-items: center;   /* перебиваем baseline у .lk-head--display: плюс
+                            должен стоять по центру строки, а не по базовой */
+  gap: 18px;
+  /* симметричные поля: в свёрнутом виде заголовок стоит ровно посередине
+     между своей линейкой сверху и следующей снизу */
+  padding: 18px 0;
+}
+
+/* Свёрнутая секция — это одна строка, и межсекционный зазор под ней
+   (--sec-gap) оставлял огромную пустоту до линии футера. Гасим его
+   отрицательным полем; при открытии зазор возвращается сам. */
+.lk-fold:not([open]) { margin-bottom: calc(var(--sec-gap) * -1); }
+
+/* Плюс нарисован двумя градиентами в одном псевдоэлементе — в <summary>
+   нельзя положить ничего, кроме одного заголовка, поэтому разметкой его
+   не сделать. При открытии поворачивается на 135° и становится крестом. */
+.lk-fold-head::after {
+  content: "";
+  flex: none;
+  width: 20px;
+  height: 20px;
+  background:
+    linear-gradient(var(--ink), var(--ink)) center / 100% 1.5px no-repeat,
+    linear-gradient(var(--ink), var(--ink)) center / 1.5px 100% no-repeat;
+  transition: transform .3s cubic-bezier(.4, 0, .2, 1);
+}
+.lk-fold[open] .lk-fold-head::after { transform: rotate(135deg); }
+
+/* Содержимое проявляется при открытии. Высоту не анимируем намеренно:
+   у <details> она неизвестна до раскрытия, а max-height на глазок даёт
+   рваный тайминг на карточках разной высоты. */
+@keyframes lk-fold-in {
+  from { opacity: 0; transform: translateY(-10px); }
+}
+.lk-fold[open] .lk-fold-body {
+  animation: lk-fold-in .32s cubic-bezier(.4, 0, .2, 1) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lk-fold[open] .lk-fold-body { animation: none; }
+}
+
+
+/* ==========================================================
+   КАРТОЧКИ: скругление, подъём и лимонный блик
+   Общее для трёх видов — услуги, материалы, отзывы.
+   Селекторы с двумя классами намеренно: у `.lk a` свой `transition`,
+   и правило с одним классом он перебивает по специфичности.
+   ========================================================== */
+
+.lk .lk-svc,
+.lk .lk-card,
+.lk .lk-quote {
+  position: relative;
+  overflow: hidden;          /* подрезает блик по скруглению */
+  border-radius: 14px;
+  transition:
+    transform .3s cubic-bezier(.22, .8, .3, 1),
+    box-shadow .3s cubic-bezier(.22, .8, .3, 1),
+    border-color .3s ease;
+}
+
+.lk .lk-svc:hover,
+.lk .lk-card:hover,
+.lk .lk-quote:hover {
+  transform: translateY(-5px);
+  border-color: var(--muted);
+  box-shadow: 0 12px 28px rgba(10, 10, 10, .08);
+}
+
+/* Блик — мягкая лимонная полоса, проходящая по диагонали через всю
+   карточку. Прозрачность низкая намеренно: на 34% он читается как
+   отсвет, а не как заливка, и текст под ним остаётся читаемым. */
+.lk .lk-svc::after,
+.lk .lk-card::after,
+.lk .lk-quote::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0;
+  background: linear-gradient(100deg,
+    transparent 28%,
+    rgba(232, 255, 82, .34) 47%,
+    rgba(232, 255, 82, .34) 53%,
+    transparent 72%);
+}
+
+@keyframes lk-shine {
+  0%   { opacity: 0; transform: translateX(-100%); }
+  20%  { opacity: 1; }
+  80%  { opacity: 1; }
+  100% { opacity: 0; transform: translateX(100%); }
+}
+
+.lk .lk-svc:hover::after,
+.lk .lk-card:hover::after,
+.lk .lk-quote:hover::after {
+  animation: lk-shine 1.15s cubic-bezier(.35, .1, .25, 1);
+}
+
+/* тач: ни подъём, ни блик не должны залипать после касания */
+@media (hover: none) {
+  .lk .lk-svc:hover,
+  .lk .lk-card:hover,
+  .lk .lk-quote:hover {
+    transform: none;
+    box-shadow: none;
+    border-color: var(--rule-2);
+  }
+  .lk .lk-svc:hover::after,
+  .lk .lk-card:hover::after,
+  .lk .lk-quote:hover::after { animation: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lk .lk-svc:hover,
+  .lk .lk-card:hover,
+  .lk .lk-quote:hover { transform: none; }
+  .lk .lk-svc:hover::after,
+  .lk .lk-card:hover::after,
+  .lk .lk-quote:hover::after { animation: none; }
+}
+
+
+/* ==========================================================
+   ШТАМПЫ — Safira March
+   Всё, что набрано капителью с разрядкой, плюс номера, индексы и годы.
+   Courier со страниц ушёл совсем и остался только запасным в стеке.
+
+   Блок стоит в самом конце файла намеренно: `font-weight` здесь должен
+   иметь последнее слово. В Safira March есть только Regular, а почти на
+   всех этих элементах ниже по файлу стоит 700 — браузер подделал бы
+   жирное утолщением, что на сайте запрещено.
+
+   Заголовков карточек (`.lk-svc-title`, `.lk-card h3`, `.lk-case-name`,
+   `.lk-job h4`) здесь намеренно НЕТ: светлая антиква в 17px рядом с
+   жирной ценой читалась слабее неё и ломала иерархию. Они идут
+   Montserrat Bold, как и вся проза.
+   ========================================================== */
+
+.lk h1:not(.lk-name),
+.lk h2,
+.lk-cv-head,
+.lk-topic-head,
+.lk-count,
+.lk-case-no,
+.lk-case-term,
+.lk-case-label,
+.lk-kind,
+.lk-tag,
+.lk-year,
+.lk-svc-term,
+.lk-topic-list i {
+  font-family: 'Safira March', 'Courier New', Courier, monospace;
+  font-weight: 400;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lk-svc:hover .lk-svc-arrow { transform: none; }
 }
