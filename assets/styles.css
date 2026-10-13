@@ -408,8 +408,10 @@
 /* карточка: пунктирный контур — «вырезать по линии», как в газетной рубрике.
    Карточка больше не ссылка целиком: внутри две разные кнопки, а вложенные
    друг в друга ссылки невалидны. Поэтому и ховера на всей карточке нет —
-   подсвечивается только то, что действительно нажимается. */
-.lk-svc {
+   подсвечивается только то, что действительно нажимается.
+   Тот же контур носят карточки кейсов внизу главной. */
+.lk-svc,
+.lk-work {
   display: flex;
   flex-direction: column;
   gap: 12px;
@@ -427,7 +429,7 @@
 }
 
 /* перечень того, что входит в формат */
-.lk-svc-list {
+.lk-list {
   display: flex;
   flex-direction: column;
   gap: 7px;
@@ -437,12 +439,12 @@
   font-size: 12.5px;
   line-height: 1.5;
 }
-.lk-svc-list li {
+.lk-list li {
   display: flex;
   align-items: flex-start;
   gap: 10px;
 }
-.lk-svc-list li::before {
+.lk-list li::before {
   content: "\2014";
   flex: none;
   color: var(--muted);
@@ -511,71 +513,34 @@
 
 /* ---- кейсы на главной ---- */
 
-/* Три колонки с пунктирными перегородками — тот же приём, что у тем
-   на «Обо мне». Пороги перехода те же, что у резюме: в русских словах
-   вроде «институциональные» колонка уже 190px рвёт строку за край. */
+/* Та же карточка, что у форматов и материалов: пунктирный контур,
+   тот же внутренний ритм. Пороги колонок как у резюме — в колонке
+   уже 190px «институциональные» рвёт строку за край. */
 .lk-works {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
   padding-top: 24px;
 }
-.lk-work { padding: 0 22px; }
-.lk-work:first-child { padding-left: 0; }
-.lk-work:last-child  { padding-right: 0; }
-.lk-work + .lk-work { border-left: 1px dashed var(--rule); }
+@media (max-width: 1200px) { .lk-works { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 900px)  { .lk-works { grid-template-columns: minmax(0, 1fr); } }
 
-@media (max-width: 1200px) {
-  .lk-works { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px 0; }
-  .lk-work:nth-child(odd)  { padding-left: 0; }
-  .lk-work:nth-child(even) { padding-right: 0; }
-  .lk-work:nth-child(odd)  { border-left: 0; }
-}
-@media (max-width: 900px) {
-  .lk-works { grid-template-columns: minmax(0, 1fr); gap: 0; }
-  .lk-work { padding: 20px 0; }
-  /* перегородку снимаем тем же селектором, которым её поставили:
-     `.lk-work + .lk-work` весомее одиночного `.lk-work`, и правило
-     из медиазапроса его не перебивало — колонка оставалась с рамкой */
-  .lk-work + .lk-work {
-    border-left: 0;
-    border-top: 1px dashed var(--rule);
-  }
-  .lk-work:first-child { padding-top: 0; }
-}
-
-.lk-work-name { font-size: 15px; font-weight: 700; line-height: 1.3; }
+.lk-work-name { font-size: 17px; font-weight: 700; line-height: 1.3; }
 
 .lk-work-medium {
-  padding-top: 4px;
-  font-size: 12px;
-  line-height: 1.5;
-  color: var(--muted);
-}
-
-/* результат — то, ради чего кейс и показывают */
-.lk-work-result {
-  padding-top: 14px;
-  font-size: 13.5px;
-  font-weight: 700;
-  line-height: 1.45;
-}
-
-/* факты идут строкой через точку, как в газетной сводке: точка висит
-   на элементе, а не ставится между ними — так её не нужно убирать
-   у последнего, достаточно :last-child */
-.lk-work-facts {
-  padding-top: 12px;
   font-size: 12.5px;
   line-height: 1.6;
   color: var(--muted);
 }
-.lk-work-facts li { display: inline; }
-.lk-work-facts li::after { content: " \00B7 "; }
-.lk-work-facts li:last-child::after { content: ""; }
 
-.lk-work .lk-more {
-  display: inline-block;
-  margin-top: 14px;
+/* результат стоит там же, где цена в карточках выше: последняя строка
+   перед кнопкой, отбитая пунктиром. Это и есть итог кейса. */
+.lk-work-result {
+  padding-top: 12px;
+  border-top: 1px dashed var(--rule);
+  font-size: 13.5px;
+  font-weight: 700;
+  line-height: 1.45;
 }
 
 /* ---- сетки карточек ---- */
@@ -903,10 +868,11 @@ html, body { background: #FAF9F4; }
 }
 
 
-/* примечание к формату — курсив на лимонной подложке */
+/* примечание к формату — курсив, отбитый пунктиром снизу.
+   Лимонная подложка убрана по просьбе заказчицы. */
 .lk-svc-note {
-  padding: 8px 10px;
-  background: var(--lemon);
+  padding-bottom: 10px;
+  border-bottom: 1px dashed var(--ink);
   font-size: 11.5px;
   font-style: italic;
   line-height: 1.55;
