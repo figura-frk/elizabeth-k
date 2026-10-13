@@ -160,11 +160,15 @@
 }
 .lk-nav a:hover { box-shadow: inset 0 -1px 0 var(--ink); }
 
-/* текущий раздел: лимонный маркер, тот же приём, что у имени */
+/* Текущий раздел: розовая черта под словом — тем же цветом размечены
+   маркеры списков в кейсах и курсор. Подчёркивание через text-decoration,
+   а не рамкой снизу: на телефоне у пункта 13px паддинга сверху и снизу
+   под тач-цель, и линия-рамка ушла бы на 13px ниже текста. */
 .lk-nav a[aria-current="page"] {
-  background: var(--lemon);
-  padding: 1px 6px 1px 4px;
-  margin-left: -4px;
+  text-decoration: underline;
+  text-decoration-color: var(--lk-cursor);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 4px;
 }
 
 /* фото показывается целиком, в родных пропорциях — не кадрируется.
@@ -1044,7 +1048,6 @@ html, body { background: #FAF9F4; }
      Ровно 44px = 18px текста + 13px паддинга сверху и снизу. */
   .lk-nav { gap: 2px; }
   .lk-nav a { padding: 13px 0; }
-  .lk-nav a[aria-current="page"] { padding: 13px 6px 13px 4px; }
 
   /* контактные строки были 38px — добираем до тех же 44px */
   .lk-contact { padding: 12px 0; }
