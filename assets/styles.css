@@ -516,24 +516,47 @@
 /* Каждый формат — отдельная секция с якорем: с главной «Подробнее»
    ведёт прямо в свой формат (services.html#consultation и т.д.).
    scroll-margin, чтобы заголовок не прилипал к верхней кромке окна. */
-.lk-fmt {
+.lk-fmt { scroll-margin-top: 28px; }
+
+/* Разворот: слева рассказ, справа колонка с составом, ценой и кнопкой.
+   Так заполняется вся ширина, но строка прозы остаётся в читабельной
+   мере: раньше текст был заперт в 46em, а правая половина экрана
+   пустовала. Замерено — в развороте на 1440px в строке 60 знаков. */
+.lk-fmt-cols {
+  display: grid;
+  grid-template-columns: minmax(0, 1.45fr) minmax(0, 1fr);
+  gap: 0 40px;
+  padding-top: 20px;
+}
+
+.lk-fmt-main {
   display: flex;
   flex-direction: column;
   gap: 16px;
-  scroll-margin-top: 28px;
 }
 
-/* мера как у лида: длинный текст на всю ширину колонки не читается */
+/* Мера строки. Без потолка на 1199px (разворот уже сложился) в строке
+   оказывалось 80 знаков, а вступление вверху страницы растягивалось
+   на 109 — глаз терял начало следующей строки. 42em держат 66. */
 .lk-fmt-text {
-  max-width: 46em;
-  line-height: 1.7;
+  max-width: 42em;
+  line-height: 1.75;
+}
+
+/* правый столбец отделён пунктиром — тем же приёмом, что колонки
+   сайдбара и контента на всех страницах */
+.lk-fmt-aside {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding-left: 40px;
+  border-left: 1px dashed var(--rule);
 }
 
 .lk-fmt-group {
   display: flex;
   flex-direction: column;
   gap: 10px;
-  max-width: 46em;
 }
 
 .lk-fmt-label {
@@ -544,13 +567,25 @@
   color: var(--muted);
 }
 
-.lk-fmt .lk-list { flex: none; font-size: 13.5px; }
-.lk-fmt .lk-price,
-.lk-fmt .lk-actions { max-width: 46em; }
+.lk-fmt .lk-list { flex: none; font-size: 13px; line-height: 1.5; }
 .lk-fmt .lk-actions { border-top: 0; padding-top: 0; }
 
+/* Ниже 1200px разворот складывается: левой колонке остаётся 343px —
+   это 38 знаков в строке, вдвое меньше нормальной меры, текст начинает
+   сыпаться лесенкой. Правому столбцу там же меньше 280px, а в нём
+   строки вроде «поиск и анализ опен-коллов, резиденций и выставочных
+   возможностей». */
+@media (max-width: 1200px) {
+  .lk-fmt-cols { grid-template-columns: minmax(0, 1fr); gap: 22px 0; }
+  .lk-fmt-aside {
+    padding-left: 0;
+    padding-top: 20px;
+    border-left: 0;
+    border-top: 1px dashed var(--rule);
+  }
+}
+
 @media (max-width: 760px) {
-  .lk-fmt { gap: 14px; }
   .lk-fmt .lk-list { font-size: 12.5px; }
 }
 
