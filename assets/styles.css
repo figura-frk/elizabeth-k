@@ -236,6 +236,63 @@
   max-width: 46em;
 }
 
+/* ---- бегущая строка под лидом ---- */
+
+/* Лента продублирована в разметке. Сдвиг ровно на -50% ставит копию
+   на место оригинала, поэтому шов не виден и петля бесконечна.
+   overflow: hidden здесь не украшение: без него лента в две длины
+   растянула бы страницу по горизонтали на всех экранах. */
+.lk-ticker {
+  align-self: stretch;   /* .lk-lead жмёт детей по контенту, а строка во всю ширину */
+  margin-top: 8px;
+  overflow: hidden;
+  border-top: 1px dashed var(--ink);
+  border-bottom: 1px dashed var(--ink);
+}
+
+.lk-ticker-track {
+  display: flex;
+  width: max-content;
+  animation: lk-ticker-run 70s linear infinite;
+}
+
+/* навёл курсор — строка встала, можно дочитать */
+.lk-ticker:hover .lk-ticker-track { animation-play-state: paused; }
+
+.lk-ticker-list {
+  display: flex;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.lk-ticker-list li {
+  padding: 12px 0;
+  font-size: 13px;
+  line-height: 1.5;
+  white-space: nowrap;
+}
+
+/* разделитель висит на элементе, а не между ними: так он есть и на стыке
+   двух лент, и шов не выдаёт себя пропущенной точкой */
+.lk-ticker-list li::after {
+  content: "\2022";
+  margin: 0 20px;
+  color: var(--muted);
+}
+
+@keyframes lk-ticker-run {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+/* кому движение мешает — строка останавливается и листается пальцем */
+@media (prefers-reduced-motion: reduce) {
+  .lk-ticker { overflow-x: auto; }
+  .lk-ticker-track { animation: none; }
+  .lk-ticker-list[aria-hidden="true"] { display: none; }
+}
+
 /* ---- кнопки ---- */
 .lk-btns { display: flex; flex-wrap: wrap; gap: 12px; }
 
@@ -796,6 +853,9 @@ html, body { background: #FAF9F4; }
 
 @media (max-width: 760px) {
   .lk-lead-text { font-size: 16px; }
+
+  .lk-ticker-list li { font-size: 12px; padding: 11px 0; }
+  .lk-ticker-list li::after { margin: 0 14px; }
   /* Сайдбар раскрывается в родительскую сетку (display: contents),
      и дальше его части раскладываются через order. До этого на телефоне
      перед первой строчкой контента приходилось пролистать имя,
