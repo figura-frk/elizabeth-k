@@ -1128,12 +1128,13 @@ html, body { background: #FAF9F4; }
    Лимон — только на номере кейса, как на номерах разделов.
    ========================================================== */
 
+/* Один кейс в ряд: карточки длинные и текстовые, в две колонки они
+   превращались в два узких столбика, которые читаешь зигзагом. */
 .lk-cases {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: minmax(0, 1fr);
   gap: 16px;
   padding-top: 24px;
-  align-items: start;
 }
 
 .lk-case {
@@ -1177,14 +1178,35 @@ html, body { background: #FAF9F4; }
 .lk-case-name { font-size: 18px; font-weight: 700; line-height: 1.3; }
 
 /* блок кейса: запрос / что сделали / успехи / не получилось */
+/* Ярлык уходит в боковую колонку, как год в резюме на «Обо мне»:
+   на всю ширину карточки «ЗАПРОС» отдельной строкой съедал высоту,
+   а текст оставался без ограничения по мере. Теперь ярлык слева,
+   текст справа и в читабельной мере. */
 .lk-case-block {
+  display: grid;
+  grid-template-columns: 136px minmax(0, 1fr);
+  gap: 0 28px;
+  padding: 16px 0 0;
+  border-top: 1px dashed var(--rule);
+}
+.lk-case-block + .lk-case-block { margin-top: 18px; }
+
+.lk-case-body {
   display: flex;
   flex-direction: column;
   gap: 12px;
-  padding: 14px 0 0;
-  border-top: 1px dashed var(--rule);
+  max-width: 40em;
 }
-.lk-case-block + .lk-case-block { margin-top: 16px; }
+
+/* Ниже 1100px на ярлык и текст рядом места нет: 136px колонки плюс
+   28px отбивки оставляют тексту 341px — это 36 знаков в строке,
+   вдвое меньше нормальной меры. Ярлык встаёт сверху. */
+@media (max-width: 1100px) {
+  .lk-case-block {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 10px 0;
+  }
+}
 
 .lk-case-label {
   font-size: 10.5px;
@@ -1253,12 +1275,6 @@ html, body { background: #FAF9F4; }
 .lk-case-list a:hover {
   background: var(--lemon);
   box-shadow: inset 0 -1px 0 var(--ink);
-}
-
-/* карточки длинные и текстовые — в две колонки им тесно раньше,
-   чем карточкам услуг, поэтому разворачиваем в одну уже на 1100 */
-@media (max-width: 1100px) {
-  .lk-cases { grid-template-columns: minmax(0, 1fr); }
 }
 
 @media (max-width: 760px) {
@@ -1342,13 +1358,6 @@ html, body { background: #FAF9F4; }
   border-top: 1px dashed var(--rule);
 }
 .lk-quote-name { font-size: 14px; font-weight: 700; }
-.lk-quote-src {
-  font-size: 10.5px;
-  letter-spacing: 1.2px;
-  text-transform: uppercase;
-  color: var(--muted);
-  white-space: nowrap;
-}
 
 @media (max-width: 760px) {
   .lk-quote { padding: 18px 16px 18px; }
@@ -1434,7 +1443,6 @@ html, body { background: #FAF9F4; }
 .lk-case-no,
 .lk-case-term,
 .lk-case-label,
-.lk-quote-src,
 .lk-year {
   font-family: 'Courier New', Courier, 'Nimbus Mono PS', 'Liberation Mono', monospace;
 }
