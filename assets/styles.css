@@ -450,7 +450,7 @@
 }
 
 /* цена — главное число карточки, поэтому крупнее всего остального набора */
-.lk-svc-price {
+.lk-price {
   padding-top: 12px;
   border-top: 1px dashed var(--rule);
   font-size: 16px;
@@ -458,14 +458,14 @@
   line-height: 1.3;
   font-variant-numeric: tabular-nums;
 }
-.lk-svc-price span {
+.lk-price span {
   font-size: 13px;
   font-weight: 400;
   color: var(--muted);
   white-space: nowrap;
 }
 
-.lk-svc-foot {
+.lk-actions {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
@@ -474,7 +474,7 @@
   border-top: 1px solid var(--ink);
 }
 
-.lk-svc-apply {
+.lk-apply {
   padding: 10px 14px;
   border: 1px solid var(--ink);
   font-size: 11px;
@@ -482,14 +482,14 @@
   letter-spacing: 1.2px;
   text-transform: uppercase;
 }
-.lk-svc-apply:hover { background: var(--ink); color: var(--paper); }
+.lk-apply:hover { background: var(--ink); color: var(--paper); }
 
-.lk-svc-more {
+.lk-more {
   font-size: 12px;
   font-weight: 700;
   box-shadow: inset 0 -1px 0 transparent;
 }
-.lk-svc-more:hover { box-shadow: inset 0 -1px 0 var(--ink); }
+.lk-more:hover { box-shadow: inset 0 -1px 0 var(--ink); }
 
 /* сколько мест осталось — приписка, не заголовок */
 .lk-svc-slots {
@@ -514,7 +514,7 @@
 
 /* ---- сетки карточек ---- */
 .lk-grid { display: grid; gap: 20px; padding-top: 24px; }
-.lk-grid--3 { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+.lk-grid--2 { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
 
 .lk-card {
   display: flex;
@@ -525,34 +525,25 @@
   background: var(--card);
 }
 
-.lk-kind {
-  font-style: normal;
-  font-size: 11px;
-  letter-spacing: 1px;
+.lk-card h3 { font-weight: 700; line-height: 1.3; }
+
+.lk-card h3 { font-size: 17px; }
+.lk-card p  { font-size: 12.5px; line-height: 1.6; color: var(--muted); }
+
+/* перечень под описанием: объём и формат. Формат курсивом — так он
+   отделён от количества, не заводя ещё одного размера набора. */
+.lk-card-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  /* тянется перечень, а не описание: тексты разной длины, а цена
+     и кнопка должны стоять на одной линии в обеих карточках */
+  flex: 1 1 auto;
+  font-size: 12.5px;
+  line-height: 1.5;
   color: var(--muted);
 }
-.lk-kind { font-size: 10px; font-weight: 700; letter-spacing: 1.4px; }
-
-.lk-card h3 { font-size: 18px; font-weight: 700; line-height: 1.3; }
-.lk-card p  { font-size: 12.5px; line-height: 1.6; }
-
-/* карточки материалов: прижать ссылку к низу */
-.lk-grid--3 .lk-card { justify-content: space-between; }
-.lk-grid--3 .lk-card > div { display: flex; flex-direction: column; gap: 10px; }
-.lk-grid--3 .lk-card h3 { font-size: 17px; }
-.lk-grid--3 .lk-card p { font-size: 12px; color: var(--muted); }
-
-.lk-get {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 10px;
-  padding-top: 12px;
-  border-top: 1px dashed var(--rule);
-  font-size: 12px;
-  font-weight: 700;
-}
-.lk-get:hover { background: var(--ink); color: var(--paper); padding-left: 8px; padding-right: 8px; }
+.lk-card-meta i { font-style: italic; }
 
 /* ---- 07 футер ---- */
 .lk-foot {
@@ -579,7 +570,7 @@
 @media (max-width: 1100px) {
   .lk { --gap: 48px; --side-w: 225px; --pad: 32px; --sec-gap: 52px; }
   .lk-lead-text { font-size: 18px; }
-  .lk-grid--3 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .lk-grid--2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 
 @media (max-width: 760px) {
@@ -604,7 +595,7 @@
 
   .lk-btn { width: 100%; font-size: 13px; padding: 16px 18px; }
 
-  .lk-grid--3 { grid-template-columns: minmax(0, 1fr); }
+  .lk-grid--2 { grid-template-columns: minmax(0, 1fr); }
   .lk-foot-meta { flex-direction: column; gap: 6px; }
 }
 
@@ -623,8 +614,7 @@
 
 /* тач-устройства: ховеры не липнут */
 @media (hover: none) {
-  .lk-contact:hover,
-  .lk-get:hover { background: none; padding-left: 0; padding-right: 0; color: inherit; }
+  .lk-contact:hover { background: none; padding-left: 0; padding-right: 0; color: inherit; }
   .lk-btn:hover { background: transparent; color: var(--ink); }
   .lk-btn--lemon:hover { background: var(--lemon); }
 }
@@ -856,15 +846,6 @@ html, body { background: #FAF9F4; }
   line-height: 1.55;
 }
 
-/* метка «бесплатно / платно» у материалов */
-.lk-tag {
-  margin-left: 8px;
-  padding: 2px 6px;
-  background: transparent;
-  border: 1px dashed var(--ink);
-  font-size: 9.5px;
-  letter-spacing: 1px;
-}
 
 /* «наверх» в футере */
 .lk-top {
@@ -926,9 +907,6 @@ html, body { background: #FAF9F4; }
 
   /* контактные строки были 38px — добираем до тех же 44px */
   .lk-contact { padding: 12px 0; }
-
-  /* «забрать» в карточках материалов: 32px → 44px */
-  .lk-get { padding-bottom: 12px; }
 
   /* «наверх»: паддинг растянул бы подчёркивание вниз и оторвал его
      от текста, поэтому линию рисуем отдельно и держим у базовой линии */
@@ -1312,8 +1290,6 @@ html, body { background: #FAF9F4; }
 .lk-topic-no,
 .lk-topic-list i,
 .lk-svc-slots,
-.lk-kind,
-.lk-tag,
 .lk-case-no,
 .lk-case-term,
 .lk-case-label,
