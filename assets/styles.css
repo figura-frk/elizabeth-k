@@ -511,6 +511,49 @@
   background: var(--ink);
 }
 
+/* ---- страница форматов работы ---- */
+
+/* Каждый формат — отдельная секция с якорем: с главной «Подробнее»
+   ведёт прямо в свой формат (services.html#consultation и т.д.).
+   scroll-margin, чтобы заголовок не прилипал к верхней кромке окна. */
+.lk-fmt {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  scroll-margin-top: 28px;
+}
+
+/* мера как у лида: длинный текст на всю ширину колонки не читается */
+.lk-fmt-text {
+  max-width: 46em;
+  line-height: 1.7;
+}
+
+.lk-fmt-group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-width: 46em;
+}
+
+.lk-fmt-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.lk-fmt .lk-list { flex: none; font-size: 13.5px; }
+.lk-fmt .lk-price,
+.lk-fmt .lk-actions { max-width: 46em; }
+.lk-fmt .lk-actions { border-top: 0; padding-top: 0; }
+
+@media (max-width: 760px) {
+  .lk-fmt { gap: 14px; }
+  .lk-fmt .lk-list { font-size: 12.5px; }
+}
+
 /* ---- кейсы на главной ---- */
 
 /* Та же карточка, что у форматов и материалов: пунктирный контур,
