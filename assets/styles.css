@@ -142,9 +142,43 @@
 }
 
 /* на ховер инвертируется — как кнопки, единая логика на всей странице */
-.lk-name a:hover .lk-mark {
+.lk-name a:hover .lk-mark,
+.lk-name a:focus-visible .lk-mark {
   background: var(--ink);
   color: var(--paper);
+}
+
+/* Имя разобрано на буквы, у каждой свой `transition-delay` — поэтому
+   на чёрном они розовеют не слева направо, а вразнобой. Задержки
+   перемешаны вручную: это перестановка шага 0.03s, а не случайные
+   числа, иначе пришлось бы звать JS ради украшения.
+   Буквы обёрнуты в span, поэтому у ссылки есть aria-label, а сама
+   надпись помечена aria-hidden: иначе скринридер читает по буквам. */
+.lk-mark span { transition: color .16s ease; }
+
+.lk-name a:hover .lk-mark span,
+.lk-name a:focus-visible .lk-mark span { color: var(--lk-cursor); }
+
+.lk-mark span:nth-child(1)  { transition-delay: .27s; }
+.lk-mark span:nth-child(2)  { transition-delay: .06s; }
+.lk-mark span:nth-child(3)  { transition-delay: .42s; }
+.lk-mark span:nth-child(4)  { transition-delay: .15s; }
+.lk-mark span:nth-child(5)  { transition-delay: .33s; }
+.lk-mark span:nth-child(6)  { transition-delay: 0s;   }
+.lk-mark span:nth-child(7)  { transition-delay: .21s; }
+.lk-mark span:nth-child(8)  { transition-delay: .45s; }
+.lk-mark span:nth-child(9)  { transition-delay: .09s; }
+.lk-mark span:nth-child(10) { transition-delay: .36s; }
+.lk-mark span:nth-child(11) { transition-delay: .18s; }
+.lk-mark span:nth-child(12) { transition-delay: .03s; }
+.lk-mark span:nth-child(13) { transition-delay: .39s; }
+.lk-mark span:nth-child(14) { transition-delay: .24s; }
+.lk-mark span:nth-child(15) { transition-delay: .12s; }
+.lk-mark span:nth-child(16) { transition-delay: .30s; }
+
+/* тач: ховера нет, а задержки остались бы висеть на :focus — обнуляем */
+@media (hover: none) {
+  .lk-mark span { transition-delay: 0s; }
 }
 
 .lk-role { font-size: 13.5px; line-height: 1.55; }
@@ -765,6 +799,8 @@
 
 @media (prefers-reduced-motion: reduce) {
   .lk * { transition: none !important; }
+  /* иначе буквы имени продолжают розоветь по очереди за счёт задержек */
+  .lk-mark span { transition-delay: 0s !important; }
 }
 
 
