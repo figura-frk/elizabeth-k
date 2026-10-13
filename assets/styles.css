@@ -663,6 +663,37 @@
   border-top: 2px dashed var(--ink);
 }
 .lk-foot-text { font-size: 24px; line-height: 1.45; }
+/* Реквизиты и оферта. Стоят во всех футерах, а не только на главной:
+   футер один на все страницы, а оферта по закону должна быть доступна
+   с любой страницы, где можно начать покупку. */
+.lk-legal {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-top: 22px;
+  border-top: 1px dashed var(--rule);
+  font-size: 11.5px;
+  line-height: 1.6;
+  color: var(--muted);
+}
+
+.lk-legal-who {
+  font-style: italic;
+  color: var(--ink);
+}
+
+/* почта и телеграм в строку, но на узком экране переносятся
+   и не склеиваются: разделитель — отступ, а не точка */
+.lk-legal-contacts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 20px;
+}
+.lk-legal a { box-shadow: inset 0 -1px 0 var(--rule); }
+.lk-legal a:hover { box-shadow: inset 0 -1px 0 var(--ink); color: var(--ink); }
+
+.lk-legal-oferta { font-weight: 700; color: var(--ink); }
+
 .lk-foot-meta {
   display: flex;
   justify-content: space-between;
