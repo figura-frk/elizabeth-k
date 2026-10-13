@@ -1320,7 +1320,7 @@ html, body { background: #FAF9F4; }
   flex-direction: column;
   gap: 16px;
   padding: 22px 22px 20px;
-  border: 1px solid var(--ink);
+  border: 1px dashed var(--ink);   /* как у карточек кейсов */
   background: var(--card);
 }
 
