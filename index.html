@@ -29,6 +29,11 @@
     <div class="lk-ident">
       <h1 class="lk-name"><a href="index.html" aria-label="Елизавета Кистень"><span class="lk-mark" aria-hidden="true"><span>Е</span><span>л</span><span>и</span><span>з</span><span>а</span><span>в</span><span>е</span><span>т</span><span>а</span> <span>К</span><span>и</span><span>с</span><span>т</span><span>е</span><span>н</span><span>ь</span></span></a></h1>
       <p class="lk-role">Арт-менеджер, ментор и куратор</p>
+
+      <!-- бургер: только на телефоне. Чекбокс держит состояние, он же
+           фокусируемый элемент для клавиатуры; видимая кнопка — label -->
+      <input class="lk-menu-toggle" type="checkbox" id="lk-menu" aria-label="Меню">
+      <label class="lk-burger" for="lk-menu"><span aria-hidden="true"></span></label>
     </div>
 
     <nav class="lk-nav" aria-label="Разделы сайта">
@@ -90,7 +95,73 @@
       <p class="lk-lead-text">Помогаю художникам участвовать в выставках, ярмарках и резиденциях, публиковаться в журналах, сотрудничать с галереями и получать гранты. А еще — создавать глубокие проекты в области современного искусства.</p>
     </section>
 
-    <!-- 02 · Услуги -->
+    <!-- 02 · Кейсы -->
+    <section class="lk-section">
+      <header class="lk-head">
+        <h2>Кейсы</h2>
+      </header>
+
+      <div class="lk-works">
+
+        <article class="lk-work">
+          <header class="lk-work-head">
+            <h3 class="lk-work-name">Наташа С.</h3>
+            <span class="lk-work-term">3 месяца</span>
+          </header>
+          <p class="lk-work-medium">Медиум: текстильное искусство, паблик-арт, инсталляции</p>
+          <p class="lk-work-result">Усилили CV для визы талантов США и открыли новые институциональные возможности.</p>
+          <p class="lk-work-label">Результат:</p>
+          <ul class="lk-list">
+            <li>2 персональные выставки</li>
+            <li>2 публикации</li>
+            <li>выставка в Еврейском музее</li>
+            <li>резиденция в Тбилиси</li>
+          </ul>
+          <div class="lk-actions">
+            <a class="lk-more" href="cases.html#natasha">Узнать подробнее <span aria-hidden="true">&rarr;</span></a>
+          </div>
+        </article>
+
+        <article class="lk-work">
+          <header class="lk-work-head">
+            <h3 class="lk-work-name">Саша С.</h3>
+            <span class="lk-work-term">12 месяцев</span>
+          </header>
+          <p class="lk-work-medium">Медиум: живопись, керамика</p>
+          <p class="lk-work-result">Увеличили видимость художницы для институций Европы и покупателей</p>
+          <p class="lk-work-label">Результат:</p>
+          <ul class="lk-list">
+            <li>выставки в 5 странах Европы</li>
+            <li>публикация в международном журнале</li>
+            <li>онлайн-галерея</li>
+            <li>продажа работы в США</li>
+          </ul>
+          <div class="lk-actions">
+            <a class="lk-more" href="cases.html#sasha">Узнать подробнее <span aria-hidden="true">&rarr;</span></a>
+          </div>
+        </article>
+
+        <article class="lk-work">
+          <header class="lk-work-head">
+            <h3 class="lk-work-name">Марина М.</h3>
+            
+          </header>
+          <p class="lk-work-medium">Медиум: графика</p>
+          <p class="lk-work-result">Систематизировали художественную практику и получили сотрудничество с галереей</p>
+          <p class="lk-work-label">Результат:</p>
+          <ul class="lk-list">
+            <li>участие в маркете</li>
+            <li>контракт на постоянную реализацию работ в KGallery</li>
+          </ul>
+          <div class="lk-actions">
+            <a class="lk-more" href="cases.html#marina-m">Узнать подробнее <span aria-hidden="true">&rarr;</span></a>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- 03 · Форматы работы -->
     <section class="lk-section">
       <header class="lk-head">
         <h2>Форматы работы</h2>
@@ -110,7 +181,7 @@
             <a class="lk-apply" href="ANKETA_URL" target="_blank" rel="noopener">Подать заявку</a>
             <a class="lk-more" href="services.html#consultation">Подробнее <span aria-hidden="true">&rarr;</span></a>
           </div>
-          <p class="lk-svc-slots">2/5 свободных места на октябрь</p>
+          <p class="lk-svc-slots">2/5 свободных места</p>
         </article>
 
         <article class="lk-svc">
@@ -126,7 +197,7 @@
             <a class="lk-apply" href="ANKETA_URL" target="_blank" rel="noopener">Подать заявку</a>
             <a class="lk-more" href="services.html#mentorship">Подробнее <span aria-hidden="true">&rarr;</span></a>
           </div>
-          <p class="lk-svc-slots">1/4 свободное место на октябрь</p>
+          <p class="lk-svc-slots">1/4 свободное место</p>
         </article>
 
         <article class="lk-svc">
@@ -143,7 +214,7 @@
             <a class="lk-apply" href="ANKETA_URL" target="_blank" rel="noopener">Подать заявку</a>
             <a class="lk-more" href="services.html#portfolio">Подробнее <span aria-hidden="true">&rarr;</span></a>
           </div>
-          <p class="lk-svc-slots">1/3 свободное место на октябрь</p>
+          <p class="lk-svc-slots">1/3 свободное место</p>
         </article>
 
         <article class="lk-svc">
@@ -159,13 +230,13 @@
             <a class="lk-apply" href="ANKETA_URL" target="_blank" rel="noopener">Подать заявку</a>
             <a class="lk-more" href="services.html#training">Подробнее <span aria-hidden="true">&rarr;</span></a>
           </div>
-          <p class="lk-svc-slots">1/3 свободное место на октябрь</p>
+          <p class="lk-svc-slots">1/3 свободное место</p>
         </article>
 
       </div>
     </section>
 
-    <!-- 03 · Материалы -->
+    <!-- 04 · Материалы -->
     <section class="lk-section">
       <header class="lk-head">
         <h2>Материалы</h2>
@@ -204,60 +275,6 @@
     </section>
 
 
-    <!-- 04 · Кейсы -->
-    <section class="lk-section">
-      <header class="lk-head">
-        <h2>Кейсы</h2>
-      </header>
-
-      <div class="lk-works">
-
-        <article class="lk-work">
-          <h3 class="lk-work-name">Наташа С.</h3>
-          <p class="lk-work-medium">Медиум: текстильное искусство, паблик-арт, инсталляции</p>
-          <ul class="lk-list">
-            <li>2 персональные выставки</li>
-            <li>2 публикации</li>
-            <li>выставка в Еврейском музее</li>
-            <li>резиденция в Тбилиси</li>
-          </ul>
-          <p class="lk-work-result">Усилили CV для визы талантов США и открыли новые институциональные возможности.</p>
-          <div class="lk-actions">
-            <a class="lk-more" href="cases.html">Узнать подробнее <span aria-hidden="true">&rarr;</span></a>
-          </div>
-        </article>
-
-        <article class="lk-work">
-          <h3 class="lk-work-name">Саша С.</h3>
-          <p class="lk-work-medium">Медиум: живопись, керамика</p>
-          <ul class="lk-list">
-            <li>выставки в 5 странах Европы</li>
-            <li>публикация в международном журнале</li>
-            <li>онлайн-галерея</li>
-            <li>продажа работы в США</li>
-          </ul>
-          <p class="lk-work-result">Увеличили видимость художницы для институций Европы и покупателей</p>
-          <div class="lk-actions">
-            <a class="lk-more" href="cases.html">Узнать подробнее <span aria-hidden="true">&rarr;</span></a>
-          </div>
-        </article>
-
-        <article class="lk-work">
-          <h3 class="lk-work-name">Марина М.</h3>
-          <p class="lk-work-medium">Медиум: графика</p>
-          <ul class="lk-list">
-            <li>участие в маркете</li>
-            <li>контракт на постоянную реализацию работ в KGallery</li>
-          </ul>
-          <p class="lk-work-result">Систематизировали художественную практику и получили сотрудничество с галереей</p>
-          <div class="lk-actions">
-            <a class="lk-more" href="cases.html">Узнать подробнее <span aria-hidden="true">&rarr;</span></a>
-          </div>
-        </article>
-
-      </div>
-    </section>
-
     <!-- 05 · Футер -->
     <footer class="lk-foot">
       <p class="lk-foot-text">Не уверены, что вам нужно?<br>Напишите в Телеграм — разберёмся вместе.</p>
@@ -281,6 +298,8 @@
     </footer>
 
   </main>
+
+  <a class="lk-up" href="#top" aria-label="Наверх"><span aria-hidden="true">&uarr;</span></a>
 </div>
 
 </body>

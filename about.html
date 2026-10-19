@@ -29,6 +29,11 @@
     <div class="lk-ident">
       <h1 class="lk-name"><a href="index.html" aria-label="Елизавета Кистень"><span class="lk-mark" aria-hidden="true"><span>Е</span><span>л</span><span>и</span><span>з</span><span>а</span><span>в</span><span>е</span><span>т</span><span>а</span> <span>К</span><span>и</span><span>с</span><span>т</span><span>е</span><span>н</span><span>ь</span></span></a></h1>
       <p class="lk-role">Арт-менеджер, ментор и куратор</p>
+
+      <!-- бургер: только на телефоне. Чекбокс держит состояние, он же
+           фокусируемый элемент для клавиатуры; видимая кнопка — label -->
+      <input class="lk-menu-toggle" type="checkbox" id="lk-menu" aria-label="Меню">
+      <label class="lk-burger" for="lk-menu"><span aria-hidden="true"></span></label>
     </div>
 
     <nav class="lk-nav" aria-label="Разделы сайта">
@@ -229,6 +234,8 @@
     </footer>
 
   </main>
+
+  <a class="lk-up" href="#top" aria-label="Наверх"><span aria-hidden="true">&uarr;</span></a>
 </div>
 
 </body>

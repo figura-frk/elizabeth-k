@@ -49,7 +49,7 @@
   --paper:    #FAF9F4;  /* газетная бумага, почти белая */
   --card:     transparent;  /* карточки без заливки — бумага и текстура проходят насквозь */
   --lemon:    #E8FF52;
-  --muted:    #85817A;
+  --muted:    #6B6760;   /* было #85817A — на бумаге не дочитывался */
   --rule:     #E1DED4;
 
   --pad:      56px;
@@ -183,6 +183,104 @@
 
 .lk-role { font-size: 13.5px; line-height: 1.55; }
 
+/* ---- бургер (только телефон) ----
+
+   Без JS: состояние держит чекбокс, видимая кнопка — его label.
+   Чекбокс не `display: none`, а уведён за край экрана, иначе он
+   перестаёт быть фокусируемым и меню не открыть с клавиатуры.
+   Показ меню включается только там, где работает `:has()`;
+   где не работает — меню просто остаётся раскрытым, как было. */
+.lk-menu-toggle {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1px;
+  height: 1px;
+  margin: 0;
+  opacity: 0;
+  /* без pointer-events: none — с ним клик по label не доходит
+     до самого чекбокса, и меню не открывается */
+}
+
+.lk-burger { display: none; }
+
+@media (max-width: 760px) {
+  .lk-ident { position: relative; }
+
+  .lk-burger {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: -4px;
+    right: 0;
+    /* 44px — минимальная тач-цель, как у пунктов меню */
+    width: 44px;
+    height: 44px;
+    cursor: pointer;
+  }
+
+  /* три полоски: средняя — сам span, крайние — его псевдоэлементы */
+  .lk-burger span,
+  .lk-burger span::before,
+  .lk-burger span::after {
+    content: "";
+    display: block;
+    width: 24px;
+    height: 2px;
+    background: var(--lk-cursor);
+    transition: transform .18s ease, opacity .12s ease;
+  }
+  .lk-burger span { position: relative; }
+  .lk-burger span::before { position: absolute; top: -7px; }
+  .lk-burger span::after  { position: absolute; top: 7px; }
+
+  /* открыто — полоски складываются в крест */
+  .lk-menu-toggle:checked + .lk-burger span { background: transparent; }
+  .lk-menu-toggle:checked + .lk-burger span::before { transform: translateY(7px) rotate(45deg); }
+  .lk-menu-toggle:checked + .lk-burger span::after  { transform: translateY(-7px) rotate(-45deg); }
+
+  .lk-menu-toggle:focus-visible + .lk-burger {
+    outline: 2px solid var(--ink);
+    outline-offset: 2px;
+  }
+
+  @supports selector(:has(*)) {
+    /* `.lk .lk-nav`, а не `.lk-nav`: базовое правило `.lk-nav { display: flex }`
+       стоит ниже по файлу, и при равной специфичности побеждало бы оно —
+       медиазапрос веса не добавляет. */
+    .lk .lk-nav { display: none; }
+    .lk-side:has(.lk-menu-toggle:checked) .lk-nav { display: flex; }
+  }
+}
+
+/* ---- «наверх» на телефоне ----
+   Текста на страницах много, и возвращаться к меню прокруткой долго.
+   Кнопка нарочно без цвета: лимон и розовый в проекте что-то значат,
+   а это служебный элемент. */
+.lk-up { display: none; }
+
+@media (max-width: 760px) {
+  .lk-up {
+    position: fixed;
+    right: 14px;
+    bottom: 14px;
+    z-index: 5;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+
+    background: var(--paper);
+    border: 1px dashed var(--ink);
+    font-size: 15px;
+    line-height: 1;
+  }
+  .lk-up:hover { background: var(--ink); color: var(--paper); }
+}
+
 .lk-nav { display: flex; flex-direction: column; gap: 9px; }
 
 .lk-nav a {
@@ -283,8 +381,9 @@
 .lk-ticker {
   align-self: stretch;   /* .lk-lead жмёт детей по контенту, а строка во всю ширину */
   overflow: hidden;
-  border-top: 1px dashed var(--ink);
-  border-bottom: 1px dashed var(--ink);
+  /* пунктир розовый — так заказчица нарисовала в макете */
+  border-top: 1px dashed var(--lk-cursor);
+  border-bottom: 1px dashed var(--lk-cursor);
 }
 
 .lk-ticker-track {
@@ -452,7 +551,7 @@
 .lk-work {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 14px;
   padding: 18px 18px 16px;
   border: 1px dashed var(--ink);
   background: var(--card);
@@ -482,16 +581,24 @@
   align-items: flex-start;
   gap: 10px;
 }
+/* точка вместо тире и розовая: тем же знаком размечены списки
+   в карточках кейсов, перечни по всему сайту теперь одинаковые */
 .lk-list li::before {
-  content: "\2014";
+  content: "";
   flex: none;
-  color: var(--muted);
+  width: 5px;
+  height: 5px;
+  margin-top: .55em;
+  border-radius: 50%;
+  background: var(--lk-cursor);
 }
 
 /* цена — главное число карточки, поэтому крупнее всего остального набора */
+/* Линий внутри карточки нет: заказчица просила, чтобы карточка
+   читалась цельно. Группы разделяет одинаковый отступ `gap` у .lk-svc,
+   .lk-card и .lk-work — 14px, а перед ценой и кнопками чуть больше. */
 .lk-price {
-  padding-top: 12px;
-  border-top: 1px dashed var(--rule);
+  padding-top: 4px;
   font-size: 16px;
   font-weight: 700;
   line-height: 1.3;
@@ -509,19 +616,23 @@
   align-items: center;
   flex-wrap: wrap;
   gap: 10px 16px;
-  padding-top: 14px;
-  border-top: 1px solid var(--ink);
+  padding-top: 4px;
 }
 
+/* Розовая заливка — из макета заказчицы. Текст чернилами, а не белым:
+   белый на этом розовом даёт контраст 3.3:1, для 11px этого мало,
+   чернила дают 6.3:1. */
 .lk-apply {
   padding: 10px 14px;
-  border: 1px solid var(--ink);
+  border: 1px solid var(--lk-cursor);
+  background: var(--lk-cursor);
+  color: var(--ink);
   font-size: 11px;
   font-weight: 700;
   letter-spacing: 1.2px;
   text-transform: uppercase;
 }
-.lk-apply:hover { background: var(--ink); color: var(--paper); }
+.lk-apply:hover { background: var(--ink); border-color: var(--ink); color: var(--paper); }
 
 .lk-more {
   font-size: 12px;
@@ -641,7 +752,28 @@
 @media (max-width: 1200px) { .lk-works { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (max-width: 900px)  { .lk-works { grid-template-columns: minmax(0, 1fr); } }
 
+.lk-work-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 14px;
+}
 .lk-work-name { font-size: 17px; font-weight: 700; line-height: 1.3; }
+.lk-work-term {
+  flex: none;
+  font-size: 12px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+/* ярлык над перечнем: результат — то, ради чего кейс и показывают */
+.lk-work-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: var(--muted);
+}
 
 .lk-work-medium {
   font-size: 12.5px;
@@ -652,8 +784,6 @@
 /* результат стоит там же, где цена в карточках выше: последняя строка
    перед кнопкой, отбитая пунктиром. Это и есть итог кейса. */
 .lk-work-result {
-  padding-top: 12px;
-  border-top: 1px dashed var(--rule);
   font-size: 13.5px;
   font-weight: 700;
   line-height: 1.45;
@@ -682,13 +812,27 @@
 .lk-card-meta {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 7px;
   /* тянется перечень, а не описание: тексты разной длины, а цена
      и кнопка должны стоять на одной линии в обеих карточках */
   flex: 1 1 auto;
   font-size: 12.5px;
   line-height: 1.5;
   color: var(--muted);
+}
+.lk-card-meta li {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+.lk-card-meta li::before {
+  content: "";
+  flex: none;
+  width: 5px;
+  height: 5px;
+  margin-top: .55em;
+  border-radius: 50%;
+  background: var(--lk-cursor);
 }
 .lk-card-meta i { font-style: italic; }
 
@@ -1050,6 +1194,15 @@ html, body { background: #FAF9F4; }
 @media (max-width: 760px) {
   .lk-lead-text { font-size: 16px; }
 
+  /* Иерархия: заголовок раздела крупнее заголовка карточки, тот —
+     крупнее текста. На телефоне разница в 3px между 20 и 17 не читалась,
+     тем более что заголовок раздела набран капителью и выглядит мельче
+     своего кегля. Разводим шаги. */
+  .lk-head h2 { font-size: 22px; }
+  .lk-svc-title,
+  .lk-work-name,
+  .lk-card h3 { font-size: 16px; }
+
   .lk-ticker-list li { font-size: 12px; padding: 11px 0; }
   .lk-ticker-list li::after { margin: 0 14px; }
   /* Сайдбар раскрывается в родительскую сетку (display: contents),
@@ -1178,6 +1331,7 @@ html, body { background: #FAF9F4; }
 }
 
 .lk-case {
+  scroll-margin-top: 28px;
   display: flex;
   flex-direction: column;
   padding: 20px 20px 22px;
@@ -1476,6 +1630,8 @@ html, body { background: #FAF9F4; }
 .lk-svc-slots,
 .lk-case-term,
 .lk-case-label,
+.lk-work-term,
+.lk-work-label,
 .lk-year {
   font-family: 'Courier New', Courier, 'Nimbus Mono PS', 'Liberation Mono', monospace;
 }

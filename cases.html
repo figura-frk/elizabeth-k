@@ -29,6 +29,11 @@
     <div class="lk-ident">
       <h1 class="lk-name"><a href="index.html" aria-label="Елизавета Кистень"><span class="lk-mark" aria-hidden="true"><span>Е</span><span>л</span><span>и</span><span>з</span><span>а</span><span>в</span><span>е</span><span>т</span><span>а</span> <span>К</span><span>и</span><span>с</span><span>т</span><span>е</span><span>н</span><span>ь</span></span></a></h1>
       <p class="lk-role">Арт-менеджер, ментор и куратор</p>
+
+      <!-- бургер: только на телефоне. Чекбокс держит состояние, он же
+           фокусируемый элемент для клавиатуры; видимая кнопка — label -->
+      <input class="lk-menu-toggle" type="checkbox" id="lk-menu" aria-label="Меню">
+      <label class="lk-burger" for="lk-menu"><span aria-hidden="true"></span></label>
     </div>
 
     <nav class="lk-nav" aria-label="Разделы сайта">
@@ -70,7 +75,7 @@
 
       <div class="lk-cases">
 
-        <article class="lk-case">
+        <article class="lk-case" id="natasha">
           <header class="lk-case-head">
             <h3 class="lk-case-name">Наташа С.</h3>
             <span class="lk-case-term">3 месяца</span>
@@ -113,7 +118,7 @@
           </div>
         </article>
 
-        <article class="lk-case">
+        <article class="lk-case" id="sasha">
           <header class="lk-case-head">
             <h3 class="lk-case-name">Саша С.</h3>
             <span class="lk-case-term">12 месяцев</span>
@@ -153,7 +158,7 @@
           </div>
         </article>
 
-        <article class="lk-case">
+        <article class="lk-case" id="vova">
           <header class="lk-case-head">
             <h3 class="lk-case-name">Вова Ш.</h3>
             <span class="lk-case-term">6 месяцев</span>
@@ -191,7 +196,7 @@
           </div>
         </article>
 
-        <article class="lk-case">
+        <article class="lk-case" id="serezha">
           <header class="lk-case-head">
             <h3 class="lk-case-name">Сережа А.</h3>
             <span class="lk-case-term">3 месяца</span>
@@ -242,7 +247,7 @@
 
       <div class="lk-cases">
 
-        <article class="lk-case">
+        <article class="lk-case" id="marina-l">
           <header class="lk-case-head">
             <h3 class="lk-case-name">Марина Л.</h3>
             <span class="lk-case-term">1 месяц</span>
@@ -282,7 +287,7 @@
 
       <div class="lk-cases">
 
-        <article class="lk-case">
+        <article class="lk-case" id="raisa">
           <header class="lk-case-head">
             <h3 class="lk-case-name">Раиса Б.</h3>
           </header>
@@ -303,7 +308,7 @@
           </div>
         </article>
 
-        <article class="lk-case">
+        <article class="lk-case" id="marina-m">
           <header class="lk-case-head">
             <h3 class="lk-case-name">Марина М.</h3>
           </header>
@@ -403,6 +408,8 @@
     </footer>
 
   </main>
+
+  <a class="lk-up" href="#top" aria-label="Наверх"><span aria-hidden="true">&uarr;</span></a>
 </div>
 
 </body>
