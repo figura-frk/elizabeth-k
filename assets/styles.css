@@ -477,55 +477,6 @@
   text-transform: uppercase;
 }
 
-/* ---- 03 темы запросов ---- */
-.lk-topics {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 0;
-  padding-top: 22px;
-}
-.lk-topic { padding: 0 22px; }
-.lk-topic:first-child { padding-left: 0; }
-.lk-topic:last-child  { padding-right: 0; }
-.lk-topic + .lk-topic { border-left: 1px dashed var(--rule); }
-
-.lk-topic-head {
-  display: flex;
-  align-items: baseline;
-  gap: 10px;
-  padding-bottom: 14px;
-  font-size: 12px;
-  font-weight: 700;
-  line-height: 1.35;
-  letter-spacing: .6px;
-  text-transform: uppercase;
-}
-.lk-topic-no {
-  flex: none;
-  padding: 2px 5px;
-  background: var(--lemon);
-  font-size: 10px;
-  letter-spacing: 1px;
-}
-
-.lk-topic-list li {
-  display: flex;
-  align-items: flex-start;
-  gap: 12px;
-  padding: 11px 0;
-  border-top: 1px dashed var(--rule);
-  font-size: 12.5px;
-  line-height: 1.55;
-}
-.lk-topic-list i {
-  flex: none;
-  font-style: normal;
-  font-size: 10.5px;
-  letter-spacing: .5px;
-  color: var(--muted);
-  padding-top: 2px;
-}
-
 /* ---- 04 услуги ---- */
 /* сетка карточек-объявлений */
 .lk-svc-grid {
@@ -692,14 +643,13 @@
   line-height: 1.75;
 }
 
-/* правый столбец отделён пунктиром — тем же приёмом, что колонки
-   сайдбара и контента на всех страницах */
+/* Линии между колонками нет: заказчица просила убрать, как и внутри
+   карточек. Столбцы разводит отбивка в 40px, этого достаточно. */
 .lk-fmt-aside {
   display: flex;
   flex-direction: column;
   gap: 18px;
   padding-left: 40px;
-  border-left: 1px dashed var(--rule);
 }
 
 .lk-fmt-group {
@@ -728,9 +678,7 @@
   .lk-fmt-cols { grid-template-columns: minmax(0, 1fr); gap: 22px 0; }
   .lk-fmt-aside {
     padding-left: 0;
-    padding-top: 20px;
-    border-left: 0;
-    border-top: 1px dashed var(--rule);
+    padding-top: 6px;
   }
 }
 
@@ -1057,16 +1005,13 @@ html, body { background: #FAF9F4; }
 }
 /* абзацы идут сплошным потоком с красной строкой — газетный набор,
    а не блоки с отбивкой */
-.lk-bio p + p { text-indent: 1.8em; }
-
-.lk-bio::first-letter {
-  float: left;
-  font-size: 52px;
-  line-height: .82;
-  font-weight: 700;
-  margin: 4px 10px 0 0;
-  padding: 6px 8px;
-  background: var(--lemon);
+/* Буквица убрана: заказчица сказала, что большая «М» читается оторванно
+   от текста. Отступ абзаца вместо неё не нужен — абзацы теперь разделяет
+   воздух, а не красная строка, иначе текст выглядит простынёй. */
+.lk-bio {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 
 /* три газетные колонки */
@@ -1155,8 +1100,7 @@ html, body { background: #FAF9F4; }
 
 @media (max-width: 760px) {
 
-  .lk-bio { font-size: 13.5px; }
-  .lk-bio::first-letter { font-size: 42px; }
+  .lk-bio { font-size: 13.5px; gap: 16px; }
   .lk-cv-item { grid-template-columns: 44px minmax(0, 1fr); }
 }
 
@@ -1179,17 +1123,6 @@ html, body { background: #FAF9F4; }
   box-shadow: inset 0 -1px 0 var(--ink);
 }
 .lk-top:hover { background: var(--lemon); }
-
-@media (max-width: 1100px) {
-  .lk-topics { grid-template-columns: minmax(0, 1fr); }
-  .lk-topic { padding: 0; }
-  .lk-topic + .lk-topic {
-    border-left: none;
-    border-top: 1px dashed var(--rule);
-    margin-top: 26px;
-    padding-top: 26px;
-  }
-}
 
 @media (max-width: 760px) {
   .lk-lead-text { font-size: 16px; }
@@ -1625,8 +1558,6 @@ html, body { background: #FAF9F4; }
 .lk h3,
 .lk h4,
 .lk-count,
-.lk-topic-no,
-.lk-topic-list i,
 .lk-svc-slots,
 .lk-case-term,
 .lk-case-label,
