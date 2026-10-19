@@ -1302,14 +1302,17 @@ html, body { background: #FAF9F4; }
    на всю ширину карточки «ЗАПРОС» отдельной строкой съедал высоту,
    а текст оставался без ограничения по мере. Теперь ярлык слева,
    текст справа и в читабельной мере. */
+/* Деление на три группы — единственное, что в карточке разделено
+   линией, поэтому линия чернильная, а не бледная, и воздуха вокруг
+   больше: заказчица просила, чтобы деление читалось ярче. */
 .lk-case-block {
   display: grid;
   grid-template-columns: 136px minmax(0, 1fr);
   gap: 0 28px;
-  padding: 16px 0 0;
-  border-top: 1px dashed var(--rule);
+  padding: 22px 0 0;
+  border-top: 1px dashed var(--ink);
 }
-.lk-case-block + .lk-case-block { margin-top: 18px; }
+.lk-case-block + .lk-case-block { margin-top: 24px; }
 
 .lk-case-body {
   display: flex;
@@ -1329,11 +1332,12 @@ html, body { background: #FAF9F4; }
 }
 
 .lk-case-label {
-  font-size: 10.5px;
+  font-size: 12px;
   font-weight: 700;
-  letter-spacing: 1.2px;
+  letter-spacing: 1.4px;
+  line-height: 1.4;
   text-transform: uppercase;
-  color: var(--muted);
+  color: var(--ink);
 }
 
 /* формулировка задачи — обычный набор */
@@ -1354,14 +1358,20 @@ html, body { background: #FAF9F4; }
 /* маркер держим висячим отступом, а не флексом: у флекс-элемента
    min-width: auto, и на узком экране строка перестаёт сжиматься —
    страница уезжает в горизонтальный скролл */
+/* Линий между пунктами нет: заказчица просила оставить разделение
+   только на ЗАПРОС / УСПЕХИ / КАК МЫ ЭТО СДЕЛАЛИ. Пункты разводит
+   отбивка — внутри группы они и так читаются как одно целое. */
+.lk-case-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
 .lk-case-list li {
-  padding: 9px 0 9px 18px;
+  padding-left: 18px;
   text-indent: -18px;
-  border-top: 1px dashed var(--rule);
   font-size: 12.5px;
   line-height: 1.55;
 }
-.lk-case-list li:first-child { padding-top: 0; border-top: none; }
 .lk-case-list li::before {
   content: "\2022";           /* • */
   margin-right: 7px;
