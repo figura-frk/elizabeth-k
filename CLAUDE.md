@@ -124,7 +124,7 @@
   поправить в четырёх файлах сразу.
 - Ссылка на оферту ведёт в Google Docs. Документ отвечает 200, но живёт
   вне сайта: если заказчица закроет доступ, ссылка молча сломается.
-- Плейсхолдер `ANKETA_URL` ещё не заменён — ссылки на анкету никуда не ведут.
+- Кнопки «Подать заявку» ведут в Telegram-бота @elizabethkisten_bot (`?start=consult|mentor|portfolio|study|site`); код бота — `~/Sites/elizabeth-k-bot`.
 - Соцсети проставлены: личный телеграм `@elizabethkisten`, канал
   «Кусаем искусство» `@kussaem`, инстаграм `instagram.com/barrrss`.
 - Курсор: `assets/cursor.png` — обычный, `assets/cursor-active.png` — на
