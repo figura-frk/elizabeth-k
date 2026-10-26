@@ -71,7 +71,7 @@ Domain settings → Add custom domain.
 ```css
 --ink:    #0A0A0A;   /* текст и рамки  */
 --paper:  #FAF9F4;   /* фон-бумага     */
---lemon:  #E8FF52;   /* акцент         */
+--lemon:  #EDFF27;   /* акцент         */
 ```
 
 Поменяешь там — поменяется на всём сайте.

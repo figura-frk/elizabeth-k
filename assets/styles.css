@@ -48,14 +48,18 @@
   --ink:      #0A0A0A;
   --paper:    #FAF9F4;  /* газетная бумага, почти белая */
   --card:     transparent;  /* карточки без заливки — бумага и текстура проходят насквозь */
-  --lemon:    #E8FF52;
+  --lemon:    #EDFF27;
   --muted:    #6B6760;   /* было #85817A — на бумаге не дочитывался */
   --rule:     #E1DED4;
+  /* пунктир рамок и разделителей — те же чернила, но на 40%: сплошь
+     чёрные пунктиры рябили. Не новый цвет, а ослабленный --ink. */
+  --dash:     color-mix(in srgb, var(--ink) 40%, transparent);
 
   --pad:      56px;
   --gap:      44px;   /* половина, вторая половина — паддинг у .lk-main */
   --side-w:   265px;
-  --sec-gap:  64px;
+  --sec-gap:  88px;   /* линий между разделами нет — их разводит воздух,
+                         втрое больше, чем от заголовка до карточек */
 
   /* ---- каркас ---- */
   display: grid;
@@ -274,7 +278,7 @@
     height: 44px;
 
     background: var(--paper);
-    border: 1px dashed var(--ink);
+    border: 1px dashed var(--dash);
     font-size: 15px;
     line-height: 1;
   }
@@ -366,10 +370,21 @@
 
 .lk-lead-text {
   font-size: 20px;
-  line-height: 1.45;
-  /* лид длинный: на 24em он вытягивался в узкий высокий
-     столбик на пол-экрана */
-  max-width: 46em;
+  line-height: 1.6;
+  /* Главный оффер. Мера 32em — строки по 50–55 знаков: на 46em они
+     растягивались почти на 90 и главное размывалось. Уже 24em нельзя —
+     лид вытягивается в узкий высокий столбик. */
+  max-width: 32em;
+}
+/* Текст оффера обычным набором, а то, что получает художник, —
+   жирным с лимонным маркером по нижней половине строки: глаз
+   выхватывает выгоды, не читая подряд. Лимон на сайте и значит
+   «главное». box-decoration-break — маркер идёт по строкам при переносе. */
+.lk-lead-text strong {
+  font-weight: 700;
+  background: linear-gradient(transparent 58%, var(--lemon) 58%, var(--lemon) 92%, transparent 92%);
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
 }
 
 /* ---- бегущая строка под лидом ---- */
@@ -382,8 +397,8 @@
   align-self: stretch;   /* .lk-lead жмёт детей по контенту, а строка во всю ширину */
   overflow: hidden;
   /* пунктир розовый — так заказчица нарисовала в макете */
-  border-top: 1px dashed var(--lk-cursor);
-  border-bottom: 1px dashed var(--lk-cursor);
+  border-top: 1px dashed var(--dash);
+  border-bottom: 1px dashed var(--dash);
 }
 
 .lk-ticker-track {
@@ -454,13 +469,14 @@
   justify-content: space-between;
   align-items: center;
   gap: 20px;
-  padding: 12px 0 14px;
-  border-top: 1px dashed var(--ink);
+  /* пунктира над заголовком больше нет: заказчица просила убрать
+     линии между разделами, их разводит воздух --sec-gap */
+  padding: 0 0 6px;
 }
 /* это главные заголовки страницы, а не подписи: набор крупный, а разрядку
    при таком кегле приходится убавлять — на 1.6px строка расползалась */
 .lk-head h2 {
-  font-size: 20px;
+  font-size: 28px;
   font-weight: 700;
   line-height: 1.2;
   letter-spacing: .6px;
@@ -504,16 +520,16 @@
   flex-direction: column;
   gap: 14px;
   padding: 18px 18px 16px;
-  border: 1px dashed var(--ink);
+  border: 1px dashed var(--dash);
   background: var(--card);
 }
 
-.lk-svc-title { font-size: 17px; font-weight: 700; line-height: 1.3; }
+.lk-svc-title { font-size: 20px; font-weight: 700; line-height: 1.3; }
 
 .lk-svc-desc {
-  font-size: 12.5px;
-  line-height: 1.6;
-  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--ink);
 }
 
 /* перечень того, что входит в формат */
@@ -547,18 +563,21 @@
 /* цена — главное число карточки, поэтому крупнее всего остального набора */
 /* Линий внутри карточки нет: заказчица просила, чтобы карточка
    читалась цельно. Группы разделяет одинаковый отступ `gap` у .lk-svc,
-   .lk-card и .lk-work — 14px, а перед ценой и кнопками чуть больше. */
-.lk-price {
-  padding-top: 4px;
-  font-size: 16px;
+   .lk-card и .lk-work — 14px. Цена с кнопкой — отдельный блок «купить»,
+   поэтому над ценой отбивка втрое больше: 14 + 18 = 32px.
+   .lk впереди: иначе в материалах цену перебивает .lk-card p (12.5px). */
+.lk .lk-price {
+  padding-top: 18px;
+  font-size: 20px;
   font-weight: 700;
   line-height: 1.3;
   font-variant-numeric: tabular-nums;
 }
 .lk-price span {
+  margin-left: 10px;
   font-size: 13px;
   font-weight: 400;
-  color: var(--muted);
+  color: var(--ink);
   white-space: nowrap;
 }
 
@@ -570,27 +589,39 @@
   padding-top: 4px;
 }
 
-/* Розовая заливка — из макета заказчицы. Текст чернилами, а не белым:
-   белый на этом розовом даёт контраст 3.3:1, для 11px этого мало,
-   чернила дают 6.3:1. */
-.lk-apply {
+/* Лимонная заливка в чернильной рамке, текст чернилами: лимон на сайте
+   и значит действие. Была розовая — заказчица сочла, что слишком розово.
+   Рамка обязательна: лимон на бумаге сам по себе почти не держит край.
+   .lk впереди: иначе .lk a { color: inherit } весомее и цвет текста теряется */
+.lk .lk-apply {
   padding: 10px 14px;
-  border: 1px solid var(--lk-cursor);
-  background: var(--lk-cursor);
+  border: 1px solid var(--ink);
+  background: var(--lemon);
   color: var(--ink);
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 700;
   letter-spacing: 1.2px;
   text-transform: uppercase;
 }
-.lk-apply:hover { background: var(--ink); border-color: var(--ink); color: var(--paper); }
+/* ховер — инверсия в чёрное, как у остальных кнопок сайта */
+.lk .lk-apply:hover { background: var(--ink); color: var(--paper); }
 
-.lk-more {
+/* Вторичная кнопка: та же форма и кегль, что у «Подать заявку»,
+   но без заливки — прозрачная в чернильной рамке. Ссылкой без рамки
+   её не хотелось нажимать, а лимон остаётся за главной кнопкой.
+   На ховер — инверсия в чёрное, стрелка сдвигается вперёд. */
+.lk .lk-more {
+  padding: 10px 14px;
+  border: 1px solid var(--ink);
+  color: var(--ink);
   font-size: 12px;
   font-weight: 700;
-  box-shadow: inset 0 -1px 0 transparent;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
 }
-.lk-more:hover { box-shadow: inset 0 -1px 0 var(--ink); }
+.lk .lk-more span { display: inline-block; transition: transform .15s ease; }
+.lk .lk-more:hover { background: var(--ink); color: var(--paper); }
+.lk .lk-more:hover span { transform: translateX(3px); }
 
 /* сколько мест осталось — приписка, не заголовок */
 .lk-svc-slots {
@@ -600,7 +631,7 @@
   font-size: 11px;
   letter-spacing: .6px;
   text-transform: uppercase;
-  color: var(--muted);
+  color: var(--ink);
 }
 .lk-svc-slots::before {
   content: "";
@@ -608,7 +639,8 @@
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background: var(--ink);
+  border: 1px solid var(--ink);
+  background: var(--lemon);  /* «места есть»: лимон в чернильном контуре, иначе на бумаге не виден */
 }
 
 /* ---- страница форматов работы ---- */
@@ -617,6 +649,26 @@
    ведёт прямо в свой формат (services.html#consultation и т.д.).
    scroll-margin, чтобы заголовок не прилипал к верхней кромке окна. */
 .lk-fmt { scroll-margin-top: 28px; }
+
+/* Между разделами сайта линий нет, но форматы здесь идут подряд
+   и сливались — заказчица просила вернуть пунктир именно между ними. */
+/* Заголовок страницы «Форматы работы» — отдельная секция без содержимого,
+   поэтому первый формат отстоял от него на целый --sec-gap. Подтягиваем
+   на те же 28px, что от заголовка до текста на «Обо мне» (6 + 22). */
+.lk-section:not(.lk-fmt) + .lk-fmt { margin-top: calc(22px - var(--sec-gap)); }
+
+.lk-fmt + .lk-fmt {
+  /* линия ровно посередине между форматами: половину --sec-gap
+     забираем отрицательным отступом и отдаём вниз, под линию */
+  margin-top: calc(var(--sec-gap) / -2);
+  padding-top: calc(var(--sec-gap) / 2);
+  border-top: 1px dashed var(--dash);
+}
+
+/* Заголовок страницы «Форматы работы» — раздел, а «Консультация»,
+   «Менторство» — его карточки. Оба набраны .lk-head h2, поэтому
+   у форматов кегль снижен до уровня заголовков карточек на главной. */
+.lk-fmt .lk-head h2 { font-size: 20px; }
 
 /* Разворот: слева рассказ, справа колонка с составом, ценой и кнопкой.
    Так заполняется вся ширина, но строка прозы остаётся в читабельной
@@ -663,7 +715,7 @@
   font-weight: 700;
   letter-spacing: 1.4px;
   text-transform: uppercase;
-  color: var(--muted);
+  color: var(--ink);
 }
 
 .lk-fmt .lk-list { flex: none; font-size: 13px; line-height: 1.5; }
@@ -710,31 +762,48 @@
 .lk-work-term {
   flex: none;
   font-size: 12px;
-  font-weight: 700;
+  color: var(--muted);
   white-space: nowrap;
 }
 
-/* ярлык над перечнем: результат — то, ради чего кейс и показывают */
-.lk-work-label {
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 1.2px;
-  text-transform: uppercase;
-  color: var(--muted);
-}
-
-.lk-work-medium {
+/* Три части карточки: шапка (имя, срок, медиум) → успехи → «Подробнее».
+   Внутри шапки медиум подтянут к имени (gap 14 − 10 = 4px), между
+   частями — по 24px.
+   .lk впереди: иначе сброс .lk p { margin: 0 } весомее. */
+.lk .lk-work-medium {
+  margin-top: -10px;
   font-size: 12.5px;
   line-height: 1.6;
   color: var(--muted);
 }
 
-/* результат стоит там же, где цена в карточках выше: последняя строка
-   перед кнопкой, отбитая пунктиром. Это и есть итог кейса. */
-.lk-work-result {
-  font-size: 13.5px;
+/* Главное в карточке кейса — результаты. Сплошь жирный перечень
+   рябил, поэтому иерархия внутри: обычный набор, а самые весомые
+   пункты жирные (подчёркивание заказчица просила убрать). */
+.lk-work .lk-list {
+  padding-top: 10px;
+  gap: 5px;
+  font-size: 13px;
+  line-height: 1.4;
+}
+/* успехи — галочкой, как в списке успехов на странице кейсов */
+.lk-work .lk-list li::before {
+  content: "\2713";           /* ✓ */
+  width: auto;
+  height: auto;
+  margin-top: 0;
+  border-radius: 0;
+  background: none;
+  color: var(--lk-cursor);
   font-weight: 700;
-  line-height: 1.45;
+}
+/* «Подробнее» в кейсе — отдельное действие, а не ещё строка перечня:
+   отбиваем его от успехов так же, как цену в карточках форматов */
+.lk-work .lk-actions { padding-top: 10px; }
+
+.lk-work-key {
+  font-style: normal;
+  font-weight: 700;
 }
 
 /* ---- сетки карточек ---- */
@@ -746,14 +815,14 @@
   flex-direction: column;
   gap: 14px;
   padding: 18px 20px 20px;
-  border: 1px dashed var(--ink);   /* как у карточек услуг */
+  border: 1px dashed var(--dash);   /* как у карточек услуг */
   background: var(--card);
 }
 
 .lk-card h3 { font-weight: 700; line-height: 1.3; }
 
-.lk-card h3 { font-size: 17px; }
-.lk-card p  { font-size: 12.5px; line-height: 1.6; color: var(--muted); }
+.lk-card h3 { font-size: 20px; }   /* как .lk-svc-title: карточки на главной одного ранга */
+.lk-card p  { font-size: 12.5px; line-height: 1.6; color: var(--ink); }
 
 /* перечень под описанием: объём и формат. Формат курсивом — так он
    отделён от количества, не заводя ещё одного размера набора. */
@@ -766,7 +835,7 @@
   flex: 1 1 auto;
   font-size: 12.5px;
   line-height: 1.5;
-  color: var(--muted);
+  color: var(--ink);
 }
 .lk-card-meta li {
   display: flex;
@@ -790,7 +859,7 @@
   flex-direction: column;
   gap: 26px;
   padding-top: 34px;
-  border-top: 2px dashed var(--ink);
+  border-top: 2px dashed var(--dash);
 }
 .lk-foot-text { font-size: 24px; line-height: 1.45; }
 /* Реквизиты и оферта. Стоят во всех футерах, а не только на главной:
@@ -838,7 +907,7 @@
    ========================================================== */
 
 @media (max-width: 1100px) {
-  .lk { --gap: 48px; --side-w: 225px; --pad: 32px; --sec-gap: 52px; }
+  .lk { --gap: 48px; --side-w: 225px; --pad: 32px; --sec-gap: 72px; }
   .lk-lead-text { font-size: 18px; }
   .lk-grid--2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
@@ -848,7 +917,7 @@
     grid-template-columns: minmax(0, 1fr);
     --gap: 44px;
     --pad: 20px;
-    --sec-gap: 44px;
+    --sec-gap: 60px;
     padding-top: 28px;
     padding-bottom: 40px;
   }
@@ -1105,11 +1174,9 @@ html, body { background: #FAF9F4; }
 }
 
 
-/* примечание к формату — курсив, отбитый пунктиром снизу.
-   Лимонная подложка убрана по просьбе заказчицы. */
+/* примечание к формату — курсив. Лимонная подложка и пунктир снизу
+   убраны по просьбе заказчицы. */
 .lk-svc-note {
-  padding-bottom: 10px;
-  border-bottom: 1px dashed var(--ink);
   font-size: 11.5px;
   font-style: italic;
   line-height: 1.55;
@@ -1131,10 +1198,11 @@ html, body { background: #FAF9F4; }
      крупнее текста. На телефоне разница в 3px между 20 и 17 не читалась,
      тем более что заголовок раздела набран капителью и выглядит мельче
      своего кегля. Разводим шаги. */
-  .lk-head h2 { font-size: 22px; }
+  .lk-head h2 { font-size: 24px; }
+  .lk-fmt .lk-head h2,
   .lk-svc-title,
-  .lk-work-name,
-  .lk-card h3 { font-size: 16px; }
+  .lk-card h3 { font-size: 18px; }
+  .lk-work-name { font-size: 16px; }
 
   .lk-ticker-list li { font-size: 12px; padding: 11px 0; }
   .lk-ticker-list li::after { margin: 0 14px; }
@@ -1268,7 +1336,7 @@ html, body { background: #FAF9F4; }
   display: flex;
   flex-direction: column;
   padding: 20px 20px 22px;
-  border: 1px dashed var(--ink);
+  border: 1px dashed var(--dash);
   background: var(--card);
 }
 
@@ -1277,20 +1345,24 @@ html, body { background: #FAF9F4; }
   align-items: baseline;
   justify-content: space-between;
   gap: 14px;
-  padding-bottom: 10px;
+  /* имя и медиум — одна шапка, поэтому почти вплотную */
+  padding-bottom: 4px;
 }
 /* срок работы прижат к правому краю шапки */
 .lk-case-term {
   flex: none;
   margin-left: auto;
   font-size: 12px;
-  font-weight: 700;
+  color: var(--muted);   /* как срок в карточках кейсов на главной */
   white-space: nowrap;
 }
 
 /* медиум художника — строка под именем */
-.lk-case-medium {
-  padding-bottom: 16px;
+/* .lk впереди: иначе сброс .lk p { padding: 0 } весомее и отбивки нет */
+.lk .lk-case-medium {
+  /* от шапки до «Запроса» — заметная отбивка: это уже другая часть.
+     Почти как между блоками (32px), чтобы шапка не прилипала к «Запросу». */
+  padding-bottom: 28px;
   font-size: 12.5px;
   line-height: 1.5;
   color: var(--muted);
@@ -1302,17 +1374,14 @@ html, body { background: #FAF9F4; }
    на всю ширину карточки «ЗАПРОС» отдельной строкой съедал высоту,
    а текст оставался без ограничения по мере. Теперь ярлык слева,
    текст справа и в читабельной мере. */
-/* Деление на три группы — единственное, что в карточке разделено
-   линией, поэтому линия чернильная, а не бледная, и воздуха вокруг
-   больше: заказчица просила, чтобы деление читалось ярче. */
+/* Линий между ЗАПРОС / УСПЕХИ / КАК МЫ ЭТО СДЕЛАЛИ нет — заказчица
+   просила убрать. Группы разводит отбивка 32px и ярлык в боковой колонке. */
 .lk-case-block {
   display: grid;
   grid-template-columns: 136px minmax(0, 1fr);
   gap: 0 28px;
-  padding: 22px 0 0;
-  border-top: 1px dashed var(--ink);
 }
-.lk-case-block + .lk-case-block { margin-top: 24px; }
+.lk-case-block + .lk-case-block { margin-top: 32px; }
 
 .lk-case-body {
   display: flex;
@@ -1412,7 +1481,7 @@ html, body { background: #FAF9F4; }
   .lk-case { padding: 18px 16px 20px; }
   .lk-case-name { font-size: 17px; }
   .lk-case-term { font-size: 11px; }
-  .lk-case-medium { font-size: 12px; }
+  .lk .lk-case-medium { font-size: 12px; }
   .lk-case-goal,
   .lk-case-quote { font-size: 12.5px; }
 }
@@ -1456,7 +1525,7 @@ html, body { background: #FAF9F4; }
   flex-direction: column;
   gap: 16px;
   padding: 22px 22px 20px;
-  border: 1px dashed var(--ink);   /* как у карточек кейсов */
+  border: 1px dashed var(--dash);   /* как у карточек кейсов */
   background: var(--card);
 }
 
@@ -1543,7 +1612,7 @@ html, body { background: #FAF9F4; }
    ========================================================== */
 
 /* не палитра сайта, а собственный цвет курсора из cursor.png */
-:root { --lk-cursor: #FF3399; }
+:root { --lk-cursor: #FF63B0; }  /* один розовый на весь сайт: Hot Lips из айдентики */
 
 @media (max-width: 1100px) {
   html,
@@ -1554,6 +1623,27 @@ html, body { background: #FAF9F4; }
   }
 }
 
+
+/* ==========================================================
+   НАБОР ПО ФОРМАТУ — как в газете
+   Абзацы прозы выровнены по ширине. Без переносов в узких колонках
+   между словами зияли бы дыры, поэтому hyphens: auto — у всех страниц
+   lang="ru", браузер переносит по-русски. Перечни, цены, подписи
+   и заголовки не выравниваем: короткие строки растянуло бы в разрядку.
+   ========================================================== */
+
+.lk-lead-text,
+.lk-svc-desc,
+.lk-card > p:not(.lk-price),
+.lk-fmt-text,
+.lk-bio p,
+.lk-case-goal,
+.lk-case-quote,
+.lk-quote-body p {
+  text-align: justify;
+  -webkit-hyphens: auto;
+  hyphens: auto;
+}
 
 /* ==========================================================
    ПЕЧАТНЫЙ ГОЛОС — Courier New
@@ -1570,9 +1660,10 @@ html, body { background: #FAF9F4; }
 .lk-count,
 .lk-svc-slots,
 .lk-case-term,
+.lk-case-medium,
 .lk-case-label,
 .lk-work-term,
-.lk-work-label,
+.lk-work-medium,
 .lk-year {
   font-family: 'Courier New', Courier, 'Nimbus Mono PS', 'Liberation Mono', monospace;
 }
